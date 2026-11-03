@@ -72,10 +72,10 @@ elif gpu_vram_mb <= 28000 or "l4" in gpu_name.lower():
     TIER_CATALOG = {
         "1": {
             "repo": "Abiray/Huihui-Qwen3.6-35B-A3B-abliterated-GGUF",
-            "file": "Huihui-Qwen3.6-35B-A3B-abliterated-Q4_K_S.gguf",
+            "file": "Huihui-Qwen3.6-35B-A3B-abliterated-Q3_K_M.gguf",
             "alias": "qwen3.6-35b-a3b:uncensored",
-            "desc": "⚡ Huihui Qwen 3.6 35B-A3B MoE (Abliterated / Cero Filtros / ~70 tok/s - 32k ctx)",
-            "context": "32768"
+            "desc": "⚡ Huihui Qwen 3.6 35B-A3B MoE (Abliterated / Cero Filtros / 128k ctx - ~70 tok/s)",
+            "context": "131072"
         },
         "2": {
             "repo": "mradermacher/Qwen3.8-35B-A3B-Distill-i1-GGUF",
@@ -201,8 +201,8 @@ server_cmd = [
     "--port", "8899",
     "-ngl", "99",
     "-c", str(CONTEXT_TOKENS),
-    "-ctk", "q8_0",
-    "-ctv", "q8_0",
+    "-ctk", "q4_0" if int(CONTEXT_TOKENS) > 65536 else "q8_0",
+    "-ctv", "q4_0" if int(CONTEXT_TOKENS) > 65536 else "q8_0",
     "--flash-attn", "on",
     "--no-mmproj",
     "--cont-batching",

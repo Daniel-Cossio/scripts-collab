@@ -20,7 +20,7 @@ Este repositorio opera bajo una estricta directriz de seguridad:
 | Tier | Hardware Colab | VRAM | Modelo Principal (2026) | Contexto | Enfoque de Uso |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Tier 1** | Tesla T4 *(Gratis)* | 15.3 GB | `DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED` | **128k tokens** | Costo cero, refactorización masiva, 45 tok/s |
-| **Tier 2** | NVIDIA L4 *(Pro)* | 24.0 GB | `Qwen3.8-35B-A3B MoE` / `Qwopus-27B` | **32k–64k** | Alta velocidad (~50 tok/s), SWE profesional |
+| **Tier 2** | NVIDIA L4 *(Pro)* | 24.0 GB | `Huihui-Qwen3.6-35B-A3B MoE` | **128k tokens** | MoE Alta velocidad (~74 tok/s), 0% censura |
 | **Tier 3** | NVIDIA A100 *(Pro+)* | 40/80 GB | `DeepSeek-R1-Distill-Llama-70B-abliterated` | **64k–128k** | Razonamiento formal o1, ciberseguridad profunda |
 
 ---
