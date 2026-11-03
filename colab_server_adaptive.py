@@ -212,6 +212,11 @@ server_cmd = [
 if ARCHIVO_MODELO:
     server_cmd.extend(["-hff", ARCHIVO_MODELO])
 
+t_inicio = time.time()
+t_descarga_fin = None
+t_carga_tensores = None
+ready = False
+
 server_proc = subprocess.Popen(
     server_cmd,
     stdout=subprocess.PIPE,
@@ -220,21 +225,63 @@ server_proc = subprocess.Popen(
     bufsize=1
 )
 
-ready = False
 for line in server_proc.stdout:
     line_clean = line.strip()
-    if any(k in line for k in ["ggml_cuda", "offloaded", "HTTP server listening", "listening on", "load:"]):
+
+    # 1. Detección de progreso de descarga desde Hugging Face
+    if any(k in line for k in ["downloading from", "common_download_file", "downloading"]):
+        print(f"   📥 {line_clean}", flush=True)
+
+    # 2. Detección de inicio de carga en memoria (fin de descarga o hit en caché)
+    if any(k in line for k in ["llama_model_loader", "loaded meta data", "llm_load_vocab"]) and t_descarga_fin is None:
+        t_descarga_fin = time.time()
+        seg_descarga = t_descarga_fin - t_inicio
+        if seg_descarga < 3.0:
+            print(f"   📦 Modelo verificado en caché local ({seg_descarga:.2f}s - sin re-descarga)", flush=True)
+        else:
+            print(f"   ✅ Descarga completada desde Hugging Face en {seg_descarga:.1f}s", flush=True)
+
+    # 3. Detección de carga de capas en GPU, buffers y KV Cache
+    if any(k in line for k in ["ggml_cuda", "offloaded", "load_tensors", "compute buffer", "kv self size"]):
         print(f"   🚀 {line_clean}", flush=True)
-    elif "error" in line.lower() or "invalid" in line.lower():
+
+    # 4. Extracción de métrica interna de carga de llama.cpp (ms)
+    match_load = re.search(r"load time\s*=\s*([\d\.]+)\s*ms", line)
+    if match_load:
+        t_carga_tensores = float(match_load.group(1)) / 1000.0
+        print(f"   ⚡ Carga pura de tensores (llama.cpp): {t_carga_tensores:.2f}s", flush=True)
+
+    # 5. Detección de errores
+    if "error" in line.lower() or "invalid" in line.lower():
         print(f"   ⚠️ {line_clean}", flush=True)
 
+    # 6. Detección de servidor activo
     if "HTTP server listening" in line or "listening on" in line:
         ready = True
         break
 
+t_fin = time.time()
+tiempo_total = t_fin - t_inicio
+
 if not ready or server_proc.poll() is not None:
     print("\n❌ Error crítico: llama-server no pudo iniciar.")
     sys.exit(1)
+
+# Reporte estructurado de métricas de tiempo
+t_vram = (t_fin - t_descarga_fin) if t_descarga_fin else tiempo_total
+seg_descarga = (t_descarga_fin - t_inicio) if t_descarga_fin else 0.0
+
+print("\n" + "─" * 75)
+print("⏱️  MÉTRICAS DE TIEMPO DE CARGA:")
+if seg_descarga < 3.0:
+    print(f"   • 📦 Verificación en Caché:     {seg_descarga:.2f} s (Hit en caché)")
+else:
+    print(f"   • 📥 Descarga Hugging Face:     {seg_descarga:.1f} s")
+print(f"   • 🧠 Carga a VRAM y KV Cache:   {t_vram:.1f} s")
+if t_carga_tensores:
+    print(f"   • ⚡ Lectura de Tensores GPU:   {t_carga_tensores:.2f} s")
+print(f"   • 🏁 Tiempo Total Preparación:  {tiempo_total:.1f} s")
+print("─" * 75)
 
 # ------------------------------------------------------------------------------
 # 7. Apertura de Túnel Cloudflare HTTPS
