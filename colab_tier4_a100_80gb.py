@@ -17,20 +17,27 @@ MODELO_ELEGIDO = os.environ.get("COLAB_MODEL_TIER4", "1")
 
 CATALOGO_MODELOS = {
     "1": {
-        "repo": "mradermacher/Kimi-Dev-72B-abliterated-GGUF",
-        "file": "Kimi-Dev-72B-abliterated.Q4_K_M.gguf",
-        "alias": "kimi-dev-72b:uncensored",
-        "desc": "💻 Kimi Dev 72B Abliterated (28 Oct 2026 / SOTA SWE & Coding Frontier / 128k ctx)",
+        "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",
+        "file": "Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-Quality.gguf",
+        "alias": "qwen3.6-opus:apex",
+        "desc": "⚡ Huihui Qwen 3.6 35B-A3B Claude 4.7 Opus APEX (1 Nov 2026 / MoE Ultra-Rápido ~130 tok/s - 128k ctx)",
         "context": "131072"
     },
     "2": {
+        "repo": "mradermacher/Kimi-Dev-72B-abliterated-GGUF",
+        "file": "Kimi-Dev-72B-abliterated.Q4_K_M.gguf",
+        "alias": "kimi-dev-72b:uncensored",
+        "desc": "💻 Kimi Dev 72B Abliterated (28 Oct 2026 / SOTA SWE & Coding Frontier / 128k ctx - 22 tok/s)",
+        "context": "131072"
+    },
+    "3": {
         "repo": "mradermacher/GoldDiamondGold-Abliterated-L33-70b-GGUF",
         "file": "GoldDiamondGold-Abliterated-L33-70b.Q4_K_M.gguf",
         "alias": "gold-diamond-70b:uncensored",
         "desc": "💎 GoldDiamondGold 70B Abliterated (3 Nov 2026 / Post-train Frontier SWE / 128k ctx)",
         "context": "131072"
     },
-    "3": {
+    "4": {
         "repo": "unsloth/Hermes-4-70B-GGUF",
         "file": "Hermes-4-70B-Q4_K_M.gguf",
         "alias": "hermes-4-70b:uncensored",
