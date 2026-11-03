@@ -18,7 +18,7 @@ MODELO_ELEGIDO = os.environ.get("COLAB_MODEL_TIER2", "1")
 CATALOGO_MODELOS = {
     "1": {
         "repo": "Abiray/Huihui-Qwen3.6-35B-A3B-abliterated-GGUF",
-        "file": "huihui-35B-Q4_K_S.gguf",
+        "file": "Huihui-Qwen3.6-35B-A3B-abliterated-Q4_K_S.gguf",
         "alias": "qwen3.6-35b-a3b:uncensored",
         "desc": "⚡ Huihui Qwen 3.6 35B-A3B MoE (Abliterated / Cero Filtros / ~70 tok/s - 32k ctx)",
         "context": "32768"

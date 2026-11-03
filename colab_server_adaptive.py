@@ -72,7 +72,7 @@ elif gpu_vram_mb <= 28000 or "l4" in gpu_name.lower():
     TIER_CATALOG = {
         "1": {
             "repo": "Abiray/Huihui-Qwen3.6-35B-A3B-abliterated-GGUF",
-            "file": "huihui-35B-Q4_K_S.gguf",
+            "file": "Huihui-Qwen3.6-35B-A3B-abliterated-Q4_K_S.gguf",
             "alias": "qwen3.6-35b-a3b:uncensored",
             "desc": "⚡ Huihui Qwen 3.6 35B-A3B MoE (Abliterated / Cero Filtros / ~70 tok/s - 32k ctx)",
             "context": "32768"
