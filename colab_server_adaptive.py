@@ -71,32 +71,32 @@ elif gpu_vram_mb <= 28000 or "l4" in gpu_name.lower():
     TIER_LABEL = "Tier 2: NVIDIA L4 24GB (SWE Agéntico Profesional)"
     TIER_CATALOG = {
         "1": {
-            "repo": "mradermacher/Qwen3.8-35B-A3B-Distill-i1-GGUF",
-            "file": "Qwen3.8-35B-A3B-Distill.i1-IQ4_XS.gguf",
-            "alias": "qwen3.8-35b-a3b:moe",
-            "desc": "⚡ Qwen 3.8 35B-A3B MoE Distill (Alta Velocidad ~50 tok/s / 35B MoE - 32k ctx)",
+            "repo": "Abiray/Huihui-Qwen3.6-35B-A3B-abliterated-GGUF",
+            "file": "huihui-35B-Q4_K_S.gguf",
+            "alias": "qwen3.6-35b-a3b:uncensored",
+            "desc": "⚡ Huihui Qwen 3.6 35B-A3B MoE (Abliterated / Cero Filtros / ~70 tok/s - 32k ctx)",
             "context": "32768"
         },
         "2": {
+            "repo": "mradermacher/Qwen3.8-35B-A3B-Distill-i1-GGUF",
+            "file": "Qwen3.8-35B-A3B-Distill.i1-IQ4_XS.gguf",
+            "alias": "qwen3.8-35b-a3b:moe",
+            "desc": "⚡ Qwen 3.8 35B-A3B MoE Distill (2026 / Alta Velocidad ~70 tok/s - 32k ctx)",
+            "context": "32768"
+        },
+        "3": {
             "repo": "Jackrong/Qwopus3.8-27B-Coder-Flash-GGUF:Q4_K_M",
             "file": None,
             "alias": "qwopus3.8-coder:27b",
-            "desc": "💻 Qwopus 3.8 27B Coder Flash (Qwen + Claude Opus Merge / SWE Specialist - 64k ctx)",
-            "context": "65536"
-        },
-        "3": {
-            "repo": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
-            "file": "Qwen3.8-27B-Uncensored-Q4_K_M.gguf",
-            "alias": "qwen3.8-uncensored:27b",
-            "desc": "🛡️ Qwen 3.8 27B Uncensored (Heretic ARA / Cero Filtros Pentesting - 64k ctx)",
+            "desc": "💻 Qwopus 3.8 27B Coder Flash (Qwen + Claude Opus Merge - 64k ctx)",
             "context": "65536"
         },
         "4": {
-            "repo": "bartowski/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF:Q4_K_M",
+            "repo": "0bserverx/Qwen3.8-27B-Heretic-Abliterated-Uncensored-GGUF:Q4_K_M",
             "file": None,
-            "alias": "deepseek-r1-qwen:32b",
-            "desc": "🔬 DeepSeek-R1 Distill Qwen 32B Abliterated (Razonamiento Profundo o1 / Sin Censura - 32k ctx)",
-            "context": "32768"
+            "alias": "qwen3.8-uncensored-rvn:27b",
+            "desc": "🛡️ Qwen 3.8 27B Heretic RVN (Doble Pasada Abliterated / Cero Filtros - 64k ctx)",
+            "context": "65536"
         }
     }
     DEFAULT_KEY = "1"
