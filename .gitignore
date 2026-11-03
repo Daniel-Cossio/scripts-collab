@@ -1,0 +1,29 @@
+# Secretos y credenciales locales (Zero-Leak Policy)
+secrets-local.md
+*.local.*
+.env*
+*.env
+*.token*
+*.secret*
+*.key
+*.pem
+*.tunnel_url
+
+# Python & Entornos
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.venv/
+env/
+venv/
+
+# Logs y Temporales
+*.log
+*.tmp
+*.temp
+.DS_Store
+
+# IDEs
+.vscode/
+.idea/
