@@ -124,27 +124,27 @@ elif gpu_vram_mb <= 45000:
 
 else:
     TIER_ID = "TIER_4_A100_80GB"
-    TIER_LABEL = "Tier 4: NVIDIA A100 80GB (Frontier 70B en Q4_K_M / 128k ctx / Q8 KV)"
+    TIER_LABEL = "Tier 4: NVIDIA A100 80GB (Frontier 72B en Q4_K_M / 128k ctx / Q8 KV)"
     TIER_CATALOG = {
         "1": {
-            "repo": "bartowski/Llama-3.3-70B-Instruct-abliterated-GGUF:Q4_K_M",
-            "file": None,
-            "alias": "llama-3.3-70b:uncensored",
-            "desc": "🏗️ Llama 3.3 70B Instruct Abliterated (Estándar Oro SWE / Q4_K_M / 128k ctx)",
+            "repo": "mradermacher/Kimi-Dev-72B-abliterated-GGUF",
+            "file": "Kimi-Dev-72B-abliterated.Q4_K_M.gguf",
+            "alias": "kimi-dev-72b:uncensored",
+            "desc": "💻 Kimi Dev 72B Abliterated (28 Oct 2026 / SOTA SWE & Coding Frontier / 128k ctx)",
             "context": "131072"
         },
         "2": {
-            "repo": "bartowski/huihui-ai_DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF:Q4_K_M",
-            "file": None,
-            "alias": "deepseek-r1-70b:uncensored",
-            "desc": "🧠 DeepSeek-R1 Distill Llama 70B Abliterated (Razonamiento Frontier o1 / 128k ctx)",
+            "repo": "mradermacher/GoldDiamondGold-Abliterated-L33-70b-GGUF",
+            "file": "GoldDiamondGold-Abliterated-L33-70b.Q4_K_M.gguf",
+            "alias": "gold-diamond-70b:uncensored",
+            "desc": "💎 GoldDiamondGold 70B Abliterated (3 Nov 2026 / Post-train Frontier SWE / 128k ctx)",
             "context": "131072"
         },
         "3": {
-            "repo": "zetasepic/Qwen2.5-72B-Instruct-abliterated-GGUF:Q4_K_M",
-            "file": None,
-            "alias": "qwen2.5-72b:uncensored",
-            "desc": "⚡ Qwen 2.5 72B Instruct Abliterated (Multilingüe, Math & Code / 128k ctx)",
+            "repo": "unsloth/Hermes-4-70B-GGUF",
+            "file": "Hermes-4-70B-Q4_K_M.gguf",
+            "alias": "hermes-4-70b:uncensored",
+            "desc": "🤖 Hermes 4 70B Unsloth (Nous Research / Agentes Autónomos & JSON Mode / 128k ctx)",
             "context": "131072"
         }
     }
