@@ -17,24 +17,31 @@ MODELO_ELEGIDO = os.environ.get("COLAB_MODEL_TIER2", "1")
 
 CATALOGO_MODELOS = {
     "1": {
-        "repo": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
-        "file": "Qwen3.8-27B-Uncensored-Q4_K_M.gguf",
-        "alias": "qwen3.8-uncensored:27b",
-        "desc": "🧠 Qwen 3.8 27B Uncensored (Heretic ARA + Multi-Token Prediction MTP / 64k ctx)",
-        "context": "65536"
+        "repo": "mradermacher/Qwen3.8-35B-A3B-Distill-i1-GGUF",
+        "file": "Qwen3.8-35B-A3B-Distill.i1-IQ4_XS.gguf",
+        "alias": "qwen3.8-35b-a3b:moe",
+        "desc": "⚡ Qwen 3.8 35B-A3B MoE Distill (Alta Velocidad ~50 tok/s / 35B MoE - 32k ctx)",
+        "context": "32768"
     },
     "2": {
-        "repo": "bartowski/mistralai_Devstral-Small-2505-GGUF:Q4_K_M",
+        "repo": "Jackrong/Qwopus3.8-27B-Coder-Flash-GGUF:Q4_K_M",
         "file": None,
-        "alias": "devstral-small-2:24b",
-        "desc": "🛠️ Devstral Small 24B (Mistral + All Hands AI SWE Agent Specialist)",
+        "alias": "qwopus3.8-coder:27b",
+        "desc": "💻 Qwopus 3.8 27B Coder Flash (Qwen + Claude Opus Merge / SWE Specialist - 64k ctx)",
         "context": "65536"
     },
     "3": {
+        "repo": "JonathanColetti/Qwen3.8-27B-Uncensored-GGUF",
+        "file": "Qwen3.8-27B-Uncensored-Q4_K_M.gguf",
+        "alias": "qwen3.8-uncensored:27b",
+        "desc": "🛡️ Qwen 3.8 27B Uncensored (Heretic ARA / Cero Filtros Pentesting - 64k ctx)",
+        "context": "65536"
+    },
+    "4": {
         "repo": "bartowski/DeepSeek-R1-Distill-Qwen-32B-abliterated-GGUF:Q4_K_M",
         "file": None,
         "alias": "deepseek-r1-qwen:32b",
-        "desc": "🔬 DeepSeek-R1 Distill Qwen 32B Abliterated (Razonamiento Profundo o1 / Sin Censura)",
+        "desc": "🔬 DeepSeek-R1 Distill Qwen 32B Abliterated (Razonamiento Profundo o1 / Sin Censura - 32k ctx)",
         "context": "32768"
     }
 }

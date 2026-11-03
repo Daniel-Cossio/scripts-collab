@@ -20,7 +20,7 @@ Este repositorio opera bajo una estricta directriz de seguridad:
 | Tier | Hardware Colab | VRAM | Modelo Principal (2026) | Contexto | Enfoque de Uso |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Tier 1** | Tesla T4 *(Gratis)* | 15.3 GB | `DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED` | **128k tokens** | Costo cero, refactorización masiva, 45 tok/s |
-| **Tier 2** | NVIDIA L4 *(Pro)* | 24.0 GB | `Qwen3.8-27B-Uncensored` (Heretic + MTP) | **64k tokens** | SWE profesional, OpenCode, AST multi-archivo |
+| **Tier 2** | NVIDIA L4 *(Pro)* | 24.0 GB | `Qwen3.8-35B-A3B MoE` / `Qwopus-27B` | **32k–64k** | Alta velocidad (~50 tok/s), SWE profesional |
 | **Tier 3** | NVIDIA A100 *(Pro+)* | 40/80 GB | `DeepSeek-R1-Distill-Llama-70B-abliterated` | **64k–128k** | Razonamiento formal o1, ciberseguridad profunda |
 
 ---
@@ -32,7 +32,7 @@ Este repositorio opera bajo una estricta directriz de seguridad:
 * **`colab_tier1_t4.py`:**
   Especializado para la GPU gratuita Tesla T4. Optimizado para exprimir hasta 128,000 tokens de contexto usando compresión KV Cache `q8_0` y Flash Attention sin sobrepasar los 15 GB de VRAM.
 * **`colab_tier2_l4.py`:**
-  Especializado para la GPU NVIDIA L4 (24 GB VRAM en Colab Pro). Diseñado para modelos de 24B a 32B (Qwen 3.8, Devstral, DeepSeek-R1-32B).
+  Especializado para la GPU NVIDIA L4 (24 GB VRAM en Colab Pro). Por defecto monta `Qwen3.8-35B-A3B MoE` (~50 tok/s con 35B de capacidad), con opciones para `Qwopus 3.8 27B` y `Qwen 3.8 27B Uncensored`.
 * **`colab_tier3_a100.py`:**
   Especializado para aceleradores NVIDIA A100 (40 GB SXM4 y 80 GB HBM2e en Colab Pro+). Capacidad completa para ejecutar pesos 70B abliterados.
 
