@@ -20,8 +20,8 @@ CATALOGO_MODELOS = {
         "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",
         "file": "Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-Quality.gguf",
         "alias": "qwen3.6-opus:apex",
-        "desc": "⚡ Huihui Qwen 3.6 35B-A3B Claude 4.7 Opus APEX (1 Nov 2026 / MoE Ultra-Rápido ~130 tok/s - 128k ctx)",
-        "context": "131072"
+        "desc": "⚡ Huihui Qwen 3.6 35B-A3B Claude 4.7 Opus APEX (1 Nov 2026 / MoE Ultra-Rápido ~130 tok/s - 262k ctx)",
+        "context": "262144"
     },
     "2": {
         "repo": "mradermacher/Kimi-Dev-72B-abliterated-GGUF",

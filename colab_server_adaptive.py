@@ -124,14 +124,14 @@ elif gpu_vram_mb <= 45000:
 
 else:
     TIER_ID = "TIER_4_A100_80GB"
-    TIER_LABEL = "Tier 4: NVIDIA A100 80GB (Frontier MoE/72B en 128k ctx / Q8 KV)"
+    TIER_LABEL = "Tier 4: NVIDIA A100 80GB (Frontier MoE/72B en 262k ctx / Q8 KV)"
     TIER_CATALOG = {
         "1": {
             "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",
             "file": "Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-Quality.gguf",
             "alias": "qwen3.6-opus:apex",
-            "desc": "⚡ Huihui Qwen 3.6 35B-A3B Claude 4.7 Opus APEX (1 Nov 2026 / MoE Ultra-Rápido ~130 tok/s - 128k ctx)",
-            "context": "131072"
+            "desc": "⚡ Huihui Qwen 3.6 35B-A3B Claude 4.7 Opus APEX (1 Nov 2026 / MoE Ultra-Rápido ~130 tok/s - 262k ctx)",
+            "context": "262144"
         },
         "2": {
             "repo": "mradermacher/Kimi-Dev-72B-abliterated-GGUF",
