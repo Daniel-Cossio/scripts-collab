@@ -17,24 +17,27 @@ Este repositorio opera bajo una estricta directriz de seguridad:
 
 ## 📊 Matriz de Hardware y Modelos (Tiers)
 
-| Tier | Hardware Colab | VRAM | Modelo Principal (2026) | Contexto | Enfoque de Uso |
+| Tier | Hardware Colab | VRAM | Modelo Principal (0% Censura) | Contexto | Enfoque de Uso |
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Tier 1** | Tesla T4 *(Gratis)* | 15.3 GB | `DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED` | **128k tokens** | Costo cero, refactorización masiva, 45 tok/s |
-| **Tier 2** | NVIDIA L4 *(Pro)* | 24.0 GB | `Huihui-Qwen3.6-35B-A3B MoE` | **128k tokens** | MoE Alta velocidad (~74 tok/s), 0% censura |
-| **Tier 3** | NVIDIA A100 *(Pro+)* | 40/80 GB | `DeepSeek-R1-Distill-Llama-70B-abliterated` | **64k–128k** | Razonamiento formal o1, ciberseguridad profunda |
+| **Tier 2** | NVIDIA L4 *(Pro)* | 24.0 GB | `Huihui-Qwen3.6-35B-A3B MoE` (`Q3_K_M`) | **128k tokens** | MoE ultra-rápido (~90 tok/s), SWE profesional |
+| **Tier 3** | NVIDIA A100 *(40GB)* | 40.5 GB | `Llama-3.3-70B-Instruct-abliterated` (`Q3_K_M`) | **64k tokens** | Modelo frontera 70B estable sin riesgo de OOM (~45 tok/s) |
+| **Tier 4** | NVIDIA A100 *(80GB)* | 81.9 GB | `Llama-3.3-70B-Instruct-abliterated` (`Q4_K_M`) | **128k tokens** | Máxima fidelidad SWE, 128k contexto, bus HBM2e 2 TB/s |
 
 ---
 
 ## 📂 Estructura de Scripts
 
 * **`colab_server_adaptive.py` (Recomendado):**
-  Script inteligente auto-detectable. Analiza la GPU asignada mediante `nvidia-smi`, selecciona automáticamente el Tier correspondiente, configura los buffers de VRAM, activa Flash Attention y levanta el modelo con su contexto óptimo.
+  Script inteligente auto-detectable. Analiza la GPU asignada mediante `nvidia-smi`, selecciona automáticamente el Tier (1, 2, 3 o 4), configura los buffers de VRAM, activa Flash Attention y levanta el modelo con su contexto óptimo.
 * **`colab_tier1_t4.py`:**
-  Especializado para la GPU gratuita Tesla T4. Optimizado para exprimir hasta 128,000 tokens de contexto usando compresión KV Cache `q8_0` y Flash Attention sin sobrepasar los 15 GB de VRAM.
+  Especializado para la GPU gratuita Tesla T4 (15 GB VRAM).
 * **`colab_tier2_l4.py`:**
-  Especializado para la GPU NVIDIA L4 (24 GB VRAM en Colab Pro). Por defecto monta `Qwen3.8-35B-A3B MoE` (~50 tok/s con 35B de capacidad), con opciones para `Qwopus 3.8 27B` y `Qwen 3.8 27B Uncensored`.
+  Especializado para la GPU NVIDIA L4 (24 GB VRAM en Colab Pro).
 * **`colab_tier3_a100.py`:**
-  Especializado para aceleradores NVIDIA A100 (40 GB SXM4 y 80 GB HBM2e en Colab Pro+). Capacidad completa para ejecutar pesos 70B abliterados.
+  Especializado para aceleradores NVIDIA A100 40 GB (SXM4).
+* **`colab_tier4_a100_80gb.py`:**
+  Especializado para aceleradores NVIDIA A100 80 GB (HBM2e / High-RAM). Cuantización `Q4_K_M` con **128k tokens** de contexto y `q8_0` KV cache.
 
 ---
 

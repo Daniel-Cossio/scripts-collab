@@ -17,24 +17,17 @@ MODELO_ELEGIDO = os.environ.get("COLAB_MODEL_TIER3", "1")
 
 CATALOGO_MODELOS = {
     "1": {
-        "repo": "bartowski/huihui-ai_DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF:Q4_K_M",
+        "repo": "bartowski/Llama-3.3-70B-Instruct-abliterated-GGUF:Q3_K_M",
         "file": None,
-        "alias": "deepseek-r1-llama:70b",
-        "desc": "🧠 DeepSeek-R1 Distill Llama 70B Abliterated (Máximo Razonamiento Frontier / Sin Filtros)",
+        "alias": "llama-3.3-70b:uncensored",
+        "desc": "🏗️ Llama 3.3 70B Instruct Abliterated (Estándar Oro SWE / Q3_K_M / 64k ctx - ~45 tok/s)",
         "context": "65536"
     },
     "2": {
-        "repo": "bartowski/Llama-3.3-70B-Instruct-abliterated-GGUF:Q4_K_M",
-        "file": None,
-        "alias": "llama-3.3-abliterated:70b",
-        "desc": "🏗️ Llama 3.3 70B Instruct Abliterated (Estándar Oro SWE & Arquitectura Masiva)",
-        "context": "65536"
-    },
-    "3": {
         "repo": "bartowski/huihui-ai_DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF:Q3_K_M",
         "file": None,
-        "alias": "deepseek-r1-llama:70b-q3",
-        "desc": "⚡ DeepSeek-R1 Distill Llama 70B Q3_K_M (Ajuste Perfecto para A100 40GB)",
+        "alias": "deepseek-r1-70b:uncensored",
+        "desc": "🧠 DeepSeek-R1 Distill Llama 70B Abliterated (Razonamiento Frontier o1 / Q3_K_M / 64k ctx)",
         "context": "65536"
     }
 }

@@ -101,30 +101,51 @@ elif gpu_vram_mb <= 28000 or "l4" in gpu_name.lower():
     }
     DEFAULT_KEY = "1"
 
-else:
-    TIER_ID = "TIER_3_A100"
-    TIER_LABEL = f"Tier 3: NVIDIA A100 ({gpu_vram_mb // 1024}GB VRAM / Frontier Level)"
+elif gpu_vram_mb <= 45000:
+    TIER_ID = "TIER_3_A100_40GB"
+    TIER_LABEL = "Tier 3: NVIDIA A100 40GB (Frontier 70B en Q3_K_M / 64k ctx)"
     TIER_CATALOG = {
         "1": {
-            "repo": "bartowski/huihui-ai_DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF:Q4_K_M",
+            "repo": "bartowski/Llama-3.3-70B-Instruct-abliterated-GGUF:Q3_K_M",
             "file": None,
-            "alias": "deepseek-r1-llama:70b",
-            "desc": "🧠 DeepSeek-R1 Distill Llama 70B Abliterated (Máximo Razonamiento Frontier / Sin Filtros)",
-            "context": "65536" if gpu_vram_mb < 60000 else "131072"
+            "alias": "llama-3.3-70b:uncensored",
+            "desc": "🏗️ Llama 3.3 70B Instruct Abliterated (Estándar Oro SWE / Q3_K_M / 64k ctx)",
+            "context": "65536"
         },
         "2": {
-            "repo": "bartowski/Llama-3.3-70B-Instruct-abliterated-GGUF:Q4_K_M",
-            "file": None,
-            "alias": "llama-3.3-abliterated:70b",
-            "desc": "🏗️ Llama 3.3 70B Instruct Abliterated (Estándar Oro SWE & Refactorización Masiva)",
-            "context": "65536"
-        },
-        "3": {
             "repo": "bartowski/huihui-ai_DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF:Q3_K_M",
             "file": None,
-            "alias": "deepseek-r1-llama:70b-q3",
-            "desc": "⚡ DeepSeek-R1 Distill Llama 70B Q3_K_M (A100 40GB Optimizado / 64k ctx)",
+            "alias": "deepseek-r1-70b:uncensored",
+            "desc": "🧠 DeepSeek-R1 Distill Llama 70B Abliterated (Razonamiento Frontier o1 / 64k ctx)",
             "context": "65536"
+        }
+    }
+    DEFAULT_KEY = "1"
+
+else:
+    TIER_ID = "TIER_4_A100_80GB"
+    TIER_LABEL = "Tier 4: NVIDIA A100 80GB (Frontier 70B en Q4_K_M / 128k ctx / Q8 KV)"
+    TIER_CATALOG = {
+        "1": {
+            "repo": "bartowski/Llama-3.3-70B-Instruct-abliterated-GGUF:Q4_K_M",
+            "file": None,
+            "alias": "llama-3.3-70b:uncensored",
+            "desc": "🏗️ Llama 3.3 70B Instruct Abliterated (Estándar Oro SWE / Q4_K_M / 128k ctx)",
+            "context": "131072"
+        },
+        "2": {
+            "repo": "bartowski/huihui-ai_DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF:Q4_K_M",
+            "file": None,
+            "alias": "deepseek-r1-70b:uncensored",
+            "desc": "🧠 DeepSeek-R1 Distill Llama 70B Abliterated (Razonamiento Frontier o1 / 128k ctx)",
+            "context": "131072"
+        },
+        "3": {
+            "repo": "zetasepic/Qwen2.5-72B-Instruct-abliterated-GGUF:Q4_K_M",
+            "file": None,
+            "alias": "qwen2.5-72b:uncensored",
+            "desc": "⚡ Qwen 2.5 72B Instruct Abliterated (Multilingüe, Math & Code / 128k ctx)",
+            "context": "131072"
         }
     }
     DEFAULT_KEY = "1"
