@@ -48,8 +48,8 @@ Este repositorio opera bajo una estricta directriz de seguridad:
 3. En una celda de código, pega y ejecuta el script deseado (por ejemplo, `colab_server_adaptive.py`):
    ```python
    # Opcional: clonar el repositorio directamente en la celda
-   !git clone https://github.com/Daniel-Cossio/-scripts-collab.git
-   %run -i -e -d /content/-scripts-collab/colab_server_adaptive.py
+   !git clone https://github.com/Daniel-Cossio/scripts-collab.git
+   %run -i -e -d /content/scripts-collab/colab_server_adaptive.py
    ```
    *(O simplemente copia y pega el contenido completo del archivo en la celda).*
 
