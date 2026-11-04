@@ -20,8 +20,10 @@ CATALOGO_MODELOS = {
         "repo": "mradermacher/Kimi-Linear-48B-A3B-Instruct-abliterated-bf16-i1-GGUF",
         "file": "Kimi-Linear-48B-A3B-Instruct-abliterated-bf16.i1-Q4_K_M.gguf",
         "alias": "kimi-linear-48b-a3b:uncensored",
-        "desc": "🌙 Kimi Linear 48B-A3B Abliterated (31 Oct 2026 / MoE 3B activos + atención lineal / 512k ctx)",
-        "context": "524288"
+        "desc": "🌙 Kimi Linear 48B-A3B Abliterated (31 Oct 2026 / EXPERIMENTAL / MoE 3B activos + atención lineal / 512k ctx)",
+        "context": "524288",
+        # KV cuantizado NO es válido aquí: llama.cpp exige que el tamaño de bloque (32) divida n_embd_head_v (72) y K==V en MLA.
+        "kv": "f16"
     },
     "2": {
         "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",
@@ -137,8 +139,8 @@ server_cmd = [
     "--port", "8899",
     "-ngl", "99",
     "-c", str(CONTEXT_TOKENS),
-    "-ctk", "q8_0",
-    "-ctv", "q8_0",
+    "-ctk", CFG_MODELO.get("kv", "q8_0"),
+    "-ctv", CFG_MODELO.get("kv", "q8_0"),
     "--flash-attn", "on",
     "--no-mmproj",
     "--cont-batching",
