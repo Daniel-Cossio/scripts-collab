@@ -22,7 +22,7 @@ Este repositorio opera bajo una estricta directriz de seguridad:
 | **Tier 1** | Tesla T4 *(Gratis)* | 15.3 GB | `DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED` | **128k tokens** | Costo cero, refactorización masiva, 45 tok/s |
 | **Tier 2** | NVIDIA L4 *(Pro)* | 24.0 GB | `Huihui-Qwen3.6-35B-A3B MoE` (`Q3_K_M`) | **128k tokens** | MoE ultra-rápido (~90 tok/s), SWE profesional |
 | **Tier 3** | NVIDIA A100 *(40GB)* | 40.5 GB | `Kimi-Linear-48B-A3B-abliterated` (`i1-Q4_K_M`, 29.7 GB) | **512k tokens** | MoE 3B activos + atención lineal, contexto extremo en 40 GB |
-| **Tier 4** | NVIDIA A100 *(80GB)* | 81.9 GB | `Kimi-Dev-72B-abliterated` (`Q4_K_M`) | **128k tokens** | SOTA SWE & Coding Frontier (28 Oct 2026), 128k contexto, bus 2 TB/s |
+| **Tier 4** | NVIDIA A100 *(80GB)* | 81.9 GB | `Huihui-Qwen3.6-Claude-4.7-Opus-APEX` (`Q6_K`) | **262k tokens** | MoE Frontier ultra-rápido (~130 tok/s), 262k ctx nativo |
 
 ---
 
@@ -37,7 +37,9 @@ Este repositorio opera bajo una estricta directriz de seguridad:
 * **`colab_tier3_a100.py`:**
   Especializado para aceleradores NVIDIA A100 40 GB (SXM4).
 * **`colab_tier4_a100_80gb.py`:**
-  Especializado para aceleradores NVIDIA A100 80 GB (HBM2e / High-RAM). Cuantización `Q4_K_M` con **128k tokens** de contexto y `q8_0` KV cache.
+  Especializado para aceleradores NVIDIA A100 80 GB (HBM2e / High-RAM). Cuantización `Q6_K` con **262k tokens** de contexto, KV cache `q8_0` y velocidad de ~130 tok/s.
+* **`COLAB_SNIPPETS.md`:**
+  Guía rápida con bloques de código individuales listos para copiar y pegar en celdas de Colab.
 
 ---
 
