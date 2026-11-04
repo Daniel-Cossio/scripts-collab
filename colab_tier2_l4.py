@@ -10,6 +10,9 @@ import sys
 import glob
 from pathlib import Path
 
+# Registro del instante exacto de inicio del script
+T_SCRIPT_GLOBAL_START = time.time()
+
 # ------------------------------------------------------------------------------
 # 0. Selector de Modelos Tier 2 (Optimizados para 24 GB VRAM)
 # ------------------------------------------------------------------------------
@@ -148,7 +151,8 @@ server_cmd = [
 if ARCHIVO_MODELO:
     server_cmd.extend(["-hff", ARCHIVO_MODELO])
 
-t_inicio = time.time()
+t_deps_done = time.time()
+t_inicio = t_deps_done
 t_descarga_fin = None
 t_carga_tensores = None
 ready = False
@@ -231,20 +235,45 @@ tunnel = subprocess.Popen(
 )
 
 url_encontrada = None
+t_tunnel_ready = None
+
 for line in tunnel.stdout:
     match = re.search(r"https://[a-zA-Z0-9-]+\.trycloudflare\.com", line)
     if match:
         url_encontrada = match.group(0)
+        t_tunnel_ready = time.time()
         break
 
 if not url_encontrada:
     print("❌ No se pudo obtener la URL de Cloudflare.")
 else:
+    t_end = t_tunnel_ready if t_tunnel_ready else time.time()
+    t_deps = t_deps_done - T_SCRIPT_GLOBAL_START
+    t_descarga = (t_descarga_fin - t_deps_done) if t_descarga_fin else 0.0
+    t_vram = (t_fin - t_descarga_fin) if t_descarga_fin else (t_fin - t_deps_done)
+    t_tunnel = (t_end - t_fin)
+    t_total_global = t_end - T_SCRIPT_GLOBAL_START
+
+    mins, secs = divmod(t_total_global, 60)
+    fmt_total = f"{int(mins)}m {secs:.1f}s" if mins > 0 else f"{secs:.1f}s"
+
     print("\n" + "=" * 75)
     print("✅ ¡SERVIDOR LISTO CON GPU NVIDIA L4!")
     print(f"🧠 Modelo:        {ALIAS_MODELO}")
     print(f"📏 Contexto:      {int(CONTEXT_TOKENS):,} tokens (Flash Attention + Q4 KV Cache)")
     print(f"🔗 URL del Túnel: {url_encontrada}")
+    print("─" * 75)
+    print("⏱️  TELEMETRÍA DE ARRANQUE COMPLETO (Script Start ➔ Conexión Lista):")
+    print(f"   • ⚙️  Preparación y dependencias:        {t_deps:.1f} s")
+    if t_descarga < 3.0:
+        print(f"   • 📦 Verificación en Caché Local:      {t_descarga:.2f} s (Hit en caché)")
+    else:
+        print(f"   • 📥 Descarga Hugging Face:            {t_descarga:.1f} s")
+    print(f"   • 🚀 Alocación en VRAM y KV Cache:     {t_vram:.1f} s")
+    if t_carga_tensores:
+        print(f"   • ⚡ Lectura de Tensores (llama.cpp):  {t_carga_tensores:.2f} s")
+    print(f"   • 🌐 Negociación de Túnel Cloudflare:  {t_tunnel:.1f} s")
+    print(f"   • 🏁 TIEMPO TOTAL HASTA DISPONIBILIDAD: {t_total_global:.1f} s ({fmt_total})")
     print("=" * 75)
     print("\n👉 EN LA TERMINAL DE TU WORKSTATION / LAPTOP, EJECUTA:\n")
     print(f"   colab-connect {url_encontrada}")
