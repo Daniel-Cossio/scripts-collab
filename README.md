@@ -21,7 +21,7 @@ Este repositorio opera bajo una estricta directriz de seguridad:
 | :--- | :--- | :--- | :--- | :--- | :--- |
 | **Tier 1** | Tesla T4 *(Gratis)* | 15.3 GB | `DeepSeek-V4-Pro-Qwen3.5-9B-UNCENSORED` | **128k tokens** | Costo cero, refactorización masiva, 45 tok/s |
 | **Tier 2** | NVIDIA L4 *(Pro)* | 24.0 GB | `Huihui-Qwen3.6-35B-A3B MoE` (`Q3_K_M`) | **128k tokens** | MoE ultra-rápido (~90 tok/s), SWE profesional |
-| **Tier 3** | NVIDIA A100 *(40GB)* | 40.5 GB | `Llama-3.3-70B-Instruct-abliterated` (`Q3_K_M`) | **64k tokens** | Modelo frontera 70B estable sin riesgo de OOM (~45 tok/s) |
+| **Tier 3** | NVIDIA A100 *(40GB)* | 40.5 GB | `Kimi-Linear-48B-A3B-abliterated` (`i1-Q4_K_M`, 29.7 GB) | **512k tokens** | MoE 3B activos + atención lineal, contexto extremo en 40 GB |
 | **Tier 4** | NVIDIA A100 *(80GB)* | 81.9 GB | `Kimi-Dev-72B-abliterated` (`Q4_K_M`) | **128k tokens** | SOTA SWE & Coding Frontier (28 Oct 2026), 128k contexto, bus 2 TB/s |
 
 ---

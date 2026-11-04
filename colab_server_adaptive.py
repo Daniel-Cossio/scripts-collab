@@ -103,20 +103,34 @@ elif gpu_vram_mb <= 28000 or "l4" in gpu_name.lower():
 
 elif gpu_vram_mb <= 45000:
     TIER_ID = "TIER_3_A100_40GB"
-    TIER_LABEL = "Tier 3: NVIDIA A100 40GB (Frontier 70B en Q3_K_M / 64k ctx)"
+    TIER_LABEL = "Tier 3: NVIDIA A100 40GB (MoE de contexto extremo / 512k ctx)"
     TIER_CATALOG = {
         "1": {
+            "repo": "mradermacher/Kimi-Linear-48B-A3B-Instruct-abliterated-bf16-i1-GGUF",
+            "file": "Kimi-Linear-48B-A3B-Instruct-abliterated-bf16.i1-Q4_K_M.gguf",
+            "alias": "kimi-linear-48b-a3b:uncensored",
+            "desc": "🌙 Kimi Linear 48B-A3B Abliterated (31 Oct 2026 / MoE 3B activos + atención lineal / 512k ctx)",
+            "context": "524288"
+        },
+        "2": {
+            "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",
+            "file": "Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-Quality.gguf",
+            "alias": "qwen3.6-opus:apex",
+            "desc": "⚡ Huihui Qwen 3.6 35B-A3B Claude 4.7 Opus APEX (1 Nov 2026 / MoE Q6_K / 128k ctx)",
+            "context": "131072"
+        },
+        "3": {
             "repo": "bartowski/Llama-3.3-70B-Instruct-abliterated-GGUF:Q3_K_M",
             "file": None,
             "alias": "llama-3.3-70b:uncensored",
-            "desc": "🏗️ Llama 3.3 70B Instruct Abliterated (Estándar Oro SWE / Q3_K_M / 64k ctx)",
+            "desc": "🏗️ Llama 3.3 70B Instruct Abliterated (Denso / Q3_K_M / 64k ctx - ~25 tok/s)",
             "context": "65536"
         },
-        "2": {
+        "4": {
             "repo": "bartowski/huihui-ai_DeepSeek-R1-Distill-Llama-70B-abliterated-GGUF:Q3_K_M",
             "file": None,
             "alias": "deepseek-r1-70b:uncensored",
-            "desc": "🧠 DeepSeek-R1 Distill Llama 70B Abliterated (Razonamiento Frontier o1 / 64k ctx)",
+            "desc": "🧠 DeepSeek-R1 Distill Llama 70B Abliterated (Denso / Q3_K_M / 64k ctx)",
             "context": "65536"
         }
     }
