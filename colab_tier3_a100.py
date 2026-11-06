@@ -148,7 +148,6 @@ server_cmd = [
     "--no-mmproj",
     "-np", "2",
     "--kv-unified",
-    "--cache-reuse", "256",
     "--cont-batching",
     "--jinja"
 ]
@@ -283,6 +282,19 @@ else:
     print("\n👉 EN LA TERMINAL DE TU WORKSTATION / LAPTOP, EJECUTA:\n")
     print(f"   colab-connect {url_encontrada}")
     print("\n" + "=" * 75)
+
+import threading
+
+def _drain_pipe(pipe, log_path):
+    try:
+        with open(log_path, "a", encoding="utf-8", errors="ignore") as f:
+            for line in pipe:
+                f.write(line)
+    except Exception:
+        pass
+
+threading.Thread(target=_drain_pipe, args=(server_proc.stdout, "/tmp/llama-server.log"), daemon=True).start()
+threading.Thread(target=_drain_pipe, args=(tunnel.stdout, "/tmp/cloudflared.log"), daemon=True).start()
 
 try:
     while True:
