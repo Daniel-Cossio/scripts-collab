@@ -146,6 +146,8 @@ server_cmd = [
     "-ctv", CFG_MODELO.get("kv", "q8_0"),
     "--flash-attn", "on",
     "--no-mmproj",
+    "-np", "1",
+    "--cache-reuse", "256",
     "--cont-batching",
     "--jinja"
 ]
