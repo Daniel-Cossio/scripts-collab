@@ -18,6 +18,28 @@ T_SCRIPT_GLOBAL_START = time.time()
 # ------------------------------------------------------------------------------
 MODELO_ELEGIDO = os.environ.get("COLAB_MODEL_TIER4", "1")
 
+# Interruptor de Persistencia en Google Drive (Caché Permanente de Modelos GGUF)
+# Si es True: monta Drive y almacena la caché de Hugging Face en tu Google Drive personal
+# Si es False: descarga en disco local efímero de Colab (/root/.cache/huggingface)
+USE_GOOGLE_DRIVE_CACHE = os.environ.get("USE_GOOGLE_DRIVE_CACHE", "1").lower() in ("1", "true", "yes")
+
+if USE_GOOGLE_DRIVE_CACHE:
+    try:
+        from google.colab import drive
+        drive_mount_path = Path("/content/drive")
+        if not (drive_mount_path / "MyDrive").exists():
+            print("\n💾 Montando Google Drive para reutilizar modelos en caché...")
+            drive.mount(str(drive_mount_path))
+        
+        hf_cache_dir = drive_mount_path / "MyDrive" / "ColabModelsCache" / "huggingface"
+        hf_cache_dir.mkdir(parents=True, exist_ok=True)
+        os.environ["HF_HOME"] = str(hf_cache_dir)
+        print(f"✅ Google Drive conectado: Caché HF persistente en {hf_cache_dir}")
+        print("   (Si el modelo ya fue descargado previamente, iniciará de inmediato sin descargar)")
+    except Exception as e:
+        print(f"⚠️ No se pudo montar Google Drive ({e}). Usando almacenamiento efímero local.")
+        USE_GOOGLE_DRIVE_CACHE = False
+
 CATALOGO_MODELOS = {
     "1": {
         "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",

@@ -2,6 +2,10 @@
 
 Guía rápida de bloques de código para copiar y pegar directamente en una celda de [Google Colab](https://colab.research.google.com/). Cada celda descarga limpiamente el repositorio y arranca el entorno sin riesgo de errores de indentación o saltos de línea.
 
+> [!NOTE]
+> **Persistencia Automática en Google Drive**: Por defecto, todos los scripts montan Google Drive y almacenan la caché de Hugging Face en `MyDrive/ColabModelsCache/huggingface/`. Si el modelo ya fue descargado previamente, iniciará al instante sin volver a descargarlo.  
+> Si prefieres usar disco efímero (sin guardar en Drive), añade `os.environ["USE_GOOGLE_DRIVE_CACHE"] = "0"` antes de `%run`.
+
 ---
 
 ## ⚡ 1. Auto-Detección Inteligente (Recomendado - Cualquier GPU)
