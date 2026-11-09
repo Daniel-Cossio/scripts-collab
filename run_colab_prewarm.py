@@ -117,27 +117,27 @@ print(f"STATUS:{is_running}---LOG---{log_tail}")
                         print(current_log)
                         last_log = current_log
 
-                    if "Proceso de pre-warm finalizado." in current_log:
-                        print("\n🎉 Pre-warm completado exitosamente en la VM.")
+                    if "Proceso de pre-warm" in current_log and "finalizado" in current_log:
+                        print("\n🎉 Pre-warm y sincronización a Google Drive completados exitosamente en la VM.")
                         break
 
-                    if running_str == "False" and "Proceso de pre-warm finalizado." not in current_log:
+                    if running_str == "False" and ("Proceso de pre-warm" not in current_log or "finalizado" not in current_log):
                         print("\n⚠️ El proceso en la VM terminó antes de lo esperado.")
                         break
             except Exception as e:
                 print(f"⚠️ Aviso en monitoreo: {e}")
 
-        # 5. Verificación final de archivos en Drive
-        print("\n🔍 [5/5] Verificando presencia de modelos en Google Drive...")
-        check_code = """
-import os
-cache_dir = '/content/drive/MyDrive/ColabModelsCache/huggingface/hub'
-if os.path.exists(cache_dir):
-    for item in os.listdir(cache_dir):
-        print(f"DIR: {item}")
-"""
+        # 5. Verificación final de archivos en Drive directamente vía Rclone
+        print("\n🔍 [5/5] Verificando presencia de modelos en Google Drive vía Rclone local...")
         try:
             drive_check = subprocess.check_output(
+                ["rclone", "lsd", "gdrive:ColabModelsCache/huggingface/hub/"],
+                text=True
+            ).strip()
+            print("   📁 Directorios en Caché Drive:")
+            print(drive_check)
+        except Exception as e:
+            print(f"   ⚠️ No se pudo verificar directamente en Drive: {e}")
                 ["colab", "exec", "-s", SESSION_NAME, "--timeout", "30"],
                 input=check_code,
                 text=True
