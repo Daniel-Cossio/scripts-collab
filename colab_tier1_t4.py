@@ -28,27 +28,33 @@ if USE_GOOGLE_DRIVE_CACHE:
     drive_mount_path = Path("/content/drive")
     my_drive = drive_mount_path / "MyDrive"
 
-    # 1. Intentar montaje nativo si estamos en interfaz web
-    if not my_drive.exists():
+    # 1. Si existe rclone.conf (entorno headless / CLI), usar Rclone directamente sin bloquear TTY
+    if not my_drive.exists() and Path("/root/.config/rclone/rclone.conf").exists():
+        try:
+            candidates = [
+                Path("/content/setup_drive_headless.py"),
+                Path("/content/scripts-collab/setup_drive_headless.py")
+            ]
+            if "__file__" in globals():
+                candidates.append(Path(__file__).resolve().parent / "setup_drive_headless.py")
+            spec_file = next((p for p in candidates if p.exists()), None)
+            if spec_file:
+                import sys
+                if str(spec_file.parent) not in sys.path:
+                    sys.path.insert(0, str(spec_file.parent))
+                import setup_drive_headless
+                setup_drive_headless.ensure_drive_mounted()
+        except Exception as e:
+            print(f"⚠️ Error en montaje headless de Drive: {e}")
+
+    # 2. Solo intentar montaje nativo si NO existe rclone y estamos en entorno interactivo
+    if not my_drive.exists() and sys.stdin.isatty():
         try:
             from google.colab import drive
             print("\n💾 Intentando conectar Google Drive nativo...")
             drive.mount(str(drive_mount_path))
         except Exception:
             pass
-
-    # 2. Si no se montó, usar Rclone headless si rclone.conf existe
-    if not my_drive.exists() and Path("/root/.config/rclone/rclone.conf").exists():
-        try:
-            import importlib.util
-            spec_file = Path(__file__).resolve().parent / "setup_drive_headless.py"
-            if spec_file.exists():
-                import sys
-                sys.path.insert(0, str(spec_file.parent))
-                import setup_drive_headless
-                setup_drive_headless.ensure_drive_mounted()
-        except Exception as e:
-            print(f"⚠️ Error en montaje headless de Drive: {e}")
 
     if my_drive.exists():
         hf_cache_dir = my_drive / "ColabModelsCache" / "huggingface"

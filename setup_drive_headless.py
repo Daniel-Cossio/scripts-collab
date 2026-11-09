@@ -17,8 +17,14 @@ def ensure_drive_mounted() -> bool:
         return True
 
     rclone_conf_path = Path("/root/.config/rclone/rclone.conf")
+    content_conf = Path("/content/rclone.conf")
+    if not rclone_conf_path.exists() and content_conf.exists():
+        rclone_conf_path.parent.mkdir(parents=True, exist_ok=True)
+        import shutil
+        shutil.copy(content_conf, rclone_conf_path)
+
     if not rclone_conf_path.exists():
-        print("⚠️ No se encontró /root/.config/rclone/rclone.conf. Omitiendo montaje headless.")
+        print("⚠️ No se encontró rclone.conf en /root/.config/rclone/ ni en /content/. Omitiendo montaje headless.")
         return False
 
     print("🚀 Montando Google Drive vía Rclone en modo headless...")

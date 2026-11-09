@@ -1,0 +1,52 @@
+[
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "model": "qwen3.6-35b-a3b:uncensored",
+    "timestamps": {},
+    "metrics": {
+      "provision_time_sec": 3.37,
+      "gpu_assigned": "NVIDIA L4, 23034 MiB",
+      "teardown_time_sec": 0.66,
+      "cu_spent_in_test": 0.0
+    },
+    "status": "FAILED",
+    "error": "Command '['colab', 'exec', '-s', 'bench-t2-1794230577', '--timeout', '30']' returned non-zero exit status 1."
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "model": "qwen3.6-35b-a3b:uncensored",
+    "timestamps": {},
+    "metrics": {
+      "provision_time_sec": 3.28,
+      "gpu_assigned": "NVIDIA L4, 23034 MiB",
+      "drive_mount_time_sec": 29.3,
+      "drive_mounted": true,
+      "teardown_time_sec": 0.97,
+      "cu_spent_in_test": 0.0
+    },
+    "status": "FAILED",
+    "error": "Command '['colab', 'exec', '-s', 'bench-t2-1794231286', '--timeout', '30']' returned non-zero exit status 1."
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "model": "qwen3.6-35b-a3b:uncensored",
+    "timestamps": {},
+    "metrics": {
+      "provision_time_sec": 3.42,
+      "gpu_assigned": "NVIDIA L4, 23034 MiB",
+      "drive_mount_time_sec": 22.66,
+      "drive_mounted": true,
+      "model_cached_in_drive": true,
+      "measured_cu_rate_per_hr": 1.94,
+      "teardown_time_sec": 0.92,
+      "cu_spent_in_test": 0.05
+    },
+    "status": "SUCCESS"
+  }
+]
