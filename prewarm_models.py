@@ -54,6 +54,19 @@ if len(sys.argv) > 1:
             "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",
             "file": "Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-Quality.gguf"
         }]
+    elif arg in ("3,4", "3-4", "heavy", "big", "grandes"):
+        MODELS_TO_DOWNLOAD = [
+            {
+                "tier": "Tier 3 (A100 40GB)",
+                "repo": "mradermacher/Kimi-Linear-48B-A3B-Instruct-abliterated-bf16-i1-GGUF",
+                "file": "Kimi-Linear-48B-A3B-Instruct-abliterated-bf16.i1-Q4_K_M.gguf"
+            },
+            {
+                "tier": "Tier 4 (A100 80GB)",
+                "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",
+                "file": "Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-Quality.gguf"
+            }
+        ]
     elif arg in ("all", "todos"):
         MODELS_TO_DOWNLOAD = [
             {
