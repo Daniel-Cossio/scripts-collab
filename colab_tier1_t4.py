@@ -91,10 +91,10 @@ CATALOGO_MODELOS = {
         "context": "131072"
     },
     "4": {
-        "repo": "google/gemma-4-12b-it-qat-GGUF:Q4_K_XL",
-        "file": "gemma-4-12B-it-qat-UD-Q4_K_XL.gguf",
+        "repo": "HauhauCS/Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced",
+        "file": "Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced-Q4_K_M.gguf",
         "alias": "gemma4-coder:12b",
-        "desc": "💎 Gemma 4 12B Coder (MTP + QAT / Google SOTA Code / 128k ctx - 21 tok/s)",
+        "desc": "💎 Gemma 4 12B QAT Uncensored (MTP + QAT / 128k ctx - 21 tok/s)",
         "context": "131072"
     }
 }

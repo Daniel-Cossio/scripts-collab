@@ -74,6 +74,19 @@ if len(sys.argv) > 1:
             "repo": "mudler/Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-GGUF",
             "file": "Huihui-Qwen3.6-35B-A3B-Claude-4.7-Opus-abliterated-APEX-Quality.gguf"
         }]
+    elif arg in ("gemma", "gemma4"):
+        MODELS_TO_DOWNLOAD = [
+            {
+                "tier": "Tier 1 (T4 - Gemma 4 12B)",
+                "repo": "HauhauCS/Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced",
+                "file": "Gemma4-12B-QAT-Uncensored-HauhauCS-Balanced-Q4_K_M.gguf"
+            },
+            {
+                "tier": "Tier 2 (L4 - Gemma 4 31B)",
+                "repo": "mradermacher/gemma-4-31B-it-ARA-heretic-GGUF",
+                "file": "gemma-4-31B-it-ARA-heretic.Q4_K_M.gguf"
+            }
+        ]
     elif arg in ("3,4", "3-4", "heavy", "big", "grandes"):
         MODELS_TO_DOWNLOAD = [
             {

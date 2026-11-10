@@ -97,10 +97,10 @@ CATALOGO_MODELOS = {
         "context": "65536"
     },
     "5": {
-        "repo": "mingzi206/gemma-4-31b-abliterated-GGUF:Q4_K_M",
-        "file": "gemma-4-31b-abliterated-Q4_K_M.gguf",
+        "repo": "mradermacher/gemma-4-31B-it-ARA-heretic-GGUF",
+        "file": "gemma-4-31B-it-ARA-heretic.Q4_K_M.gguf",
         "alias": "gemma4-abliterated:31b",
-        "desc": "💎 Gemma 4 31B Abliterated (Cero Filtros / SOTA SWE Reasoning / 128k ctx - ~52 tok/s)",
+        "desc": "💎 Gemma 4 31B ARA Heretic (Abliterated / Cero Filtros / 128k ctx - ~52 tok/s)",
         "context": "131072"
     }
 }
