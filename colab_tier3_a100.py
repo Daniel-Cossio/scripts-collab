@@ -28,7 +28,7 @@ if USE_GOOGLE_DRIVE_CACHE:
     my_drive = drive_mount_path / "MyDrive"
 
     # 1. Si existe rclone.conf (entorno headless / CLI), usar Rclone directamente sin bloquear TTY
-    if not my_drive.exists() and Path("/root/.config/rclone/rclone.conf").exists():
+    if not my_drive.exists() and (Path("/root/.config/rclone/rclone.conf").exists() or Path("/content/rclone.conf").exists()):
         try:
             candidates = [
                 Path("/content/setup_drive_headless.py"),
@@ -198,7 +198,8 @@ server_cmd = [
     "-np", "2",
     "--kv-unified",
     "--cont-batching",
-    "--jinja"
+    "--jinja",
+    "--chat-template-kwargs", '{"enable_thinking": false}'
 ]
 
 if ARCHIVO_MODELO:

@@ -31,11 +31,14 @@ def ensure_drive_mounted() -> bool:
 
     # 1. Instalar binario de rclone si no existe en la VM
     if not Path("/usr/bin/rclone").exists() and not Path("/usr/local/bin/rclone").exists():
-        print("   -> Instalando rclone en Colab VM...")
-        subprocess.run("curl -s https://rclone.org/install.sh | bash", shell=True, check=True)
+        print("   -> Instalando rclone en Colab VM...", flush=True)
+        cmd_rclone = "curl -sL https://downloads.rclone.org/rclone-current-linux-amd64.deb -o /tmp/rclone.deb && dpkg -i /tmp/rclone.deb >/dev/null 2>&1"
+        subprocess.run(cmd_rclone, shell=True)
+        if not Path("/usr/bin/rclone").exists() and not Path("/usr/local/bin/rclone").exists():
+            subprocess.run("curl -s https://rclone.org/install.sh | bash", shell=True)
 
-    # 2. Instalar y asegurar fuse3
-    subprocess.run("apt-get update -qq && apt-get install -y -qq fuse3 >/dev/null 2>&1", shell=True)
+    # 2. Asegurar soporte de fuse (no interactivo)
+    subprocess.run("DEBIAN_FRONTEND=noninteractive apt-get install -y -qq fuse3 >/dev/null 2>&1 || true", shell=True)
 
     # 3. Crear punto de montaje
     my_drive.mkdir(parents=True, exist_ok=True)

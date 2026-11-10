@@ -1,0 +1,389 @@
+[
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "deepseek-v4-qwen3.5:9b",
+    "cost_hr": 1.15,
+    "status": "UNAVAILABLE",
+    "metrics": {
+      "t_teardown_sec": 0.62,
+      "cu_spent": 0.0
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794234814.5501187
+    },
+    "error": "GPU pool exhausted for T4: Command '['colab', 'new', '-s', 'eval-t1-1794234813', '--gpu', 'T4']' returned non-zero exit status 1."
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "high_mem": false,
+    "model": "qwen3.6-35b-a3b:uncensored",
+    "cost_hr": 1.94,
+    "status": "UNAVAILABLE",
+    "metrics": {
+      "t_teardown_sec": 0.68,
+      "cu_spent": 0.0
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794235131.327713
+    },
+    "error": "GPU pool exhausted for L4: Command '['colab', 'new', '-s', 'eval-t2-1794235130', '--gpu', 'L4']' returned non-zero exit status 1."
+  },
+  {
+    "tier_id": "3",
+    "name": "tier3-a100-40gb",
+    "accelerator": "A100",
+    "high_mem": false,
+    "model": "kimi-linear-48b-a3b:uncensored",
+    "cost_hr": 6.73,
+    "status": "UNAVAILABLE",
+    "metrics": {
+      "t_teardown_sec": 0.69,
+      "cu_spent": 0.0
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794235448.2778144
+    },
+    "error": "GPU pool exhausted for A100: Command '['colab', 'new', '-s', 'eval-t3-1794235447', '--gpu', 'A100']' returned non-zero exit status 1."
+  },
+  {
+    "tier_id": "4",
+    "name": "tier4-a100-80gb",
+    "accelerator": "A100",
+    "high_mem": true,
+    "model": "qwen3.6-opus:apex",
+    "cost_hr": 8.88,
+    "status": "UNAVAILABLE",
+    "metrics": {
+      "t_teardown_sec": 0.63,
+      "cu_spent": 0.0
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794235765.1025755
+    },
+    "error": "GPU pool exhausted for A100: Command '['colab', 'new', '-s', 'eval-t4-1794235764', '--gpu', 'A100', '--high-mem']' returned non-zero exit status 1."
+  },
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "deepseek-v4-qwen3.5:9b",
+    "cost_hr": 1.15,
+    "status": "FAILED",
+    "metrics": {
+      "t_provision_sec": 3.32,
+      "gpu_hardware": "Tesla T4, 15360 MiB, 580.82.07",
+      "t_load_sec": 191.06,
+      "vram_used_after_load": "7919 MiB",
+      "t_teardown_sec": 0.91,
+      "cu_spent": 0.01
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794282711.7443783
+    },
+    "error": "list index out of range"
+  },
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "deepseek-v4-qwen3.5:9b",
+    "cost_hr": 1.15,
+    "status": "FAILED",
+    "metrics": {
+      "t_provision_sec": 3.27,
+      "gpu_hardware": "Tesla T4, 15360 MiB, 580.82.07",
+      "t_teardown_sec": 0.93,
+      "cu_spent": 0.0
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794283223.7622774
+    },
+    "error": "a bytes-like object is required, not 'str'"
+  },
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "deepseek-v4-qwen3.5:9b",
+    "cost_hr": 1.15,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 3.27,
+      "gpu_hardware": "Tesla T4, 15360 MiB, 580.82.07",
+      "t_load_sec": 279.74,
+      "vram_used_after_load": "7919 MiB",
+      "t_generation_sec": 150.31,
+      "prompt_tokens": 323,
+      "completion_tokens": 2048,
+      "total_tokens": 2371,
+      "tokens_per_second": 13.63,
+      "finish_reason": "length",
+      "t_teardown_sec": 0.94,
+      "cu_spent": 0.1
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 0,
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "has_lock": false,
+      "has_acquire": false,
+      "has_wait": false,
+      "all_tests_pass": false,
+      "error": null,
+      "pytest_output_summary": "  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    "timestamps": {
+      "start": 1794283246.6273868
+    }
+  },
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "deepseek-v4-qwen3.5:9b",
+    "cost_hr": 1.15,
+    "status": "FAILED",
+    "metrics": {
+      "t_provision_sec": 3.27,
+      "gpu_hardware": "Tesla T4, 15360 MiB, 580.82.07",
+      "t_teardown_sec": 0.99,
+      "cu_spent": 0.0
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794284041.4150198
+    },
+    "error": "Command '['colab', 'exec', '-s', 'eval-t1-1794284040', '--timeout', '60']' returned non-zero exit status 1."
+  },
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "deepseek-v4-qwen3.5:9b",
+    "cost_hr": 1.15,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 3.27,
+      "gpu_hardware": "Tesla T4, 15360 MiB, 580.82.07",
+      "t_load_sec": 264.23,
+      "vram_used_after_load": "7919 MiB",
+      "t_generation_sec": 195.8,
+      "prompt_tokens": 330,
+      "completion_tokens": 3072,
+      "total_tokens": 3402,
+      "tokens_per_second": 15.69,
+      "finish_reason": "length",
+      "t_teardown_sec": 0.9,
+      "cu_spent": 0.1
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 372,
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "has_lock": true,
+      "has_acquire": true,
+      "has_wait": true,
+      "all_tests_pass": false,
+      "error": "TimeoutExpired: Pytest took >20s (probable deadlock/infinite sleep in generated coroutine: recursive async with self._lock)",
+      "pytest_output_summary": "TIMEOUT / DEADLOCK DETECTED"
+    },
+    "timestamps": {
+      "start": 1794284181.097109
+    }
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "high_mem": false,
+    "model": "qwen3.6-35b-a3b:uncensored",
+    "cost_hr": 1.94,
+    "status": "FAILED",
+    "metrics": {
+      "t_provision_sec": 3.32,
+      "gpu_hardware": "NVIDIA L4, 23034 MiB, 580.82.07",
+      "t_teardown_sec": 0.99,
+      "cu_spent": 0.12
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794284851.84588
+    },
+    "error": "Server startup timeout. Log:\n===========================================================================\n\ud83d\ude80 GOOGLE COLAB LLAMA-SERVER | TIER 2: NVIDIA L4 (24 GB VRAM)\n\ud83c\udfaf Modelo activo:      \u26a1 Huihui Qwen 3.6 35B-A3B MoE (Abliterated / Cero Filtros / 128k ctx - ~70 tok/s)\n\ud83d\udce6 Repositorio GGUF:   Abiray/Huihui-Qwen3.6-35B-A3B-abliterated-GGUF\n\ud83d\udcc4 Archivo espec\u00edfico: Huihui-Qwen3.6-35B-A3B-abliterated-Q3_K_M.gguf\n\ud83d\udccf Ventana contexto:   131,072 tokens\n===========================================================================\n\ud83d\udd0d 1/4 Verificando GPU NVIDIA...\n\ud83c\udfae GPU Detectada: NVIDIA L4, 23034 MiB\n\ud83e\uddf9 Limpiando procesos previos y liberando VRAM...\n\ud83d\udce6 2/4 Descargando cliente de t\u00fanel Cloudflare...\n\ud83d\udce6 3/4 Verificando motor de inferencia llama.cpp con CUDA 12.8...\n   -> Descargando binarios llama-server...\n   -> Descargando runtime CUDA cuBLAS...\n\n\u2699\ufe0f  4/4 Iniciando llama-server (qwen3.6-35b-a3b:uncensored) con 131072 tokens...\n   \u26a0\ufe0f 0.22.935.900 E gguf_init_from_reader: invalid magic characters: '../.', expected 'GGUF'\n   \u2705 Descarga completada desde Hugging Face en 22.9s\n   \u26a0\ufe0f 0.22.936.195 E llama_model_load: error loading model: llama_model_loader: failed to load model from /content/drive/MyDrive/ColabModelsCache/huggingface/hub/models--Abiray--Huihui-Qwen3.6-35B-A3B-abliterated-GGUF/snapshots/b11806c533323a89b18463ee9b1001bba9275258/Huihui-Qwen3.6-35B-A3B-abliterated-Q3_K_M.gguf\n   \u26a0\ufe0f 0.22.936.249 E common_fit_params: encountered an error while trying to fit params to free device memory: failed to load model\n   \u26a0\ufe0f 0.22.937.058 E gguf_init_from_reader: invalid magic characters: '../.', expected 'GGUF'\n   \u26a0\ufe0f 0.22.937.254 E llama_model_load: error loading model: llama_model_loader: failed to load model from /content/drive/MyDrive/ColabModelsCache/huggingface/hub/models--Abiray--Huihui-Qwen3.6-35B-A3B-abliterated-GGUF/snapshots/b11806c533323a89b18463ee9b1001bba9275258/Huihui-Qwen3.6-35B-A3B-abliterated-Q3_K_M.gguf\n   \u26a0\ufe0f 0.22.937.698 E srv  server_run_i: exiting due to model loading error\n\n\u274c Error cr\u00edtico: llama-server no pudo iniciar.\n\n"
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "high_mem": false,
+    "model": "qwen3.6-35b-a3b:uncensored",
+    "cost_hr": 1.94,
+    "status": "FAILED",
+    "metrics": {
+      "t_provision_sec": 3.22,
+      "gpu_hardware": "NVIDIA L4, 23034 MiB, 580.82.07",
+      "t_teardown_sec": 0.95,
+      "cu_spent": 0.16
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794285644.407466
+    },
+    "error": "Server startup timeout. Log:\n   \u2022 \ud83e\udde0 Carga a VRAM y KV Cache:   392.9 s\n   \u2022 \ud83c\udfc1 Tiempo Total Preparaci\u00f3n:  392.9 s\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n\ud83c\udf10 Abriendo t\u00fanel seguro Cloudflare hacia tu entorno local...\n\n===========================================================================\n\u2705 \u00a1SERVIDOR LISTO CON GPU NVIDIA L4!\n\ud83e\udde0 Modelo:        qwen3.6-35b-a3b:uncensored\n\ud83d\udccf Contexto:      131,072 tokens (Flash Attention + Q4 KV Cache)\n\ud83d\udd17 URL del T\u00fanel: https://extraction-volume-manufacturers-operational.trycloudflare.com\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\u23f1\ufe0f  TELEMETR\u00cdA DE ARRANQUE COMPLETO (Script Start \u2794 Conexi\u00f3n Lista):\n   \u2022 \u2699\ufe0f  Preparaci\u00f3n y dependencias:        62.3 s\n   \u2022 \ud83d\udce6 Verificaci\u00f3n en Cach\u00e9 Local:      0.00 s (Hit en cach\u00e9)\n   \u2022 \ud83d\ude80 Alocaci\u00f3n en VRAM y KV Cache:     392.9 s\n   \u2022 \ud83c\udf10 Negociaci\u00f3n de T\u00fanel Cloudflare:  6.2 s\n   \u2022 \ud83c\udfc1 TIEMPO TOTAL HASTA DISPONIBILIDAD: 461.4 s (7m 41.4s)\n===========================================================================\n\n\ud83d\udc49 EN LA TERMINAL DE TU WORKSTATION / LAPTOP, EJECUTA:\n\n   colab-connect https://extraction-volume-manufacturers-operational.trycloudflare.com\n\n===========================================================================\n\n"
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "high_mem": false,
+    "model": "qwen3.6-35b-a3b:uncensored",
+    "cost_hr": 1.94,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 2.77,
+      "gpu_hardware": "NVIDIA L4, 23034 MiB, 580.82.07",
+      "t_load_sec": 602.43,
+      "vram_used_after_load": "17930 MiB",
+      "t_generation_sec": 30.35,
+      "prompt_tokens": 330,
+      "completion_tokens": 2656,
+      "total_tokens": 2986,
+      "tokens_per_second": 87.52,
+      "finish_reason": "stop",
+      "t_teardown_sec": 0.94,
+      "cu_spent": 0.32
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 369,
+      "tests_collected": 10,
+      "tests_passed": 9,
+      "tests_failed": 1,
+      "has_lock": true,
+      "has_acquire": true,
+      "has_wait": true,
+      "all_tests_pass": false,
+      "error": null,
+      "pytest_output_summary": "  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    "timestamps": {
+      "start": 1794286259.9611492
+    }
+  },
+  {
+    "tier_id": "3",
+    "name": "tier3-a100-40gb",
+    "accelerator": "A100",
+    "high_mem": false,
+    "model": "kimi-linear-48b-a3b:uncensored",
+    "cost_hr": 6.73,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 3.27,
+      "gpu_hardware": "NVIDIA A100-SXM4-40GB, 40960 MiB, 580.82.07",
+      "t_load_sec": 620.74,
+      "vram_used_after_load": "29924 MiB",
+      "t_generation_sec": 61.22,
+      "prompt_tokens": 311,
+      "completion_tokens": 1093,
+      "total_tokens": 1404,
+      "tokens_per_second": 17.85,
+      "finish_reason": "stop",
+      "t_teardown_sec": 0.96,
+      "cu_spent": 1.02
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 135,
+      "tests_collected": 10,
+      "tests_passed": 4,
+      "tests_failed": 6,
+      "has_lock": true,
+      "has_acquire": true,
+      "has_wait": true,
+      "all_tests_pass": false,
+      "error": null,
+      "pytest_output_summary": "6 failed, 4 passed in 1.06s"
+    },
+    "timestamps": {
+      "start": 1794286940.847929
+    }
+  },
+  {
+    "tier_id": "4",
+    "name": "tier4-a100-80gb",
+    "accelerator": "A100",
+    "high_mem": true,
+    "model": "qwen3.6-opus:apex",
+    "cost_hr": 8.88,
+    "status": "UNAVAILABLE",
+    "metrics": {
+      "t_teardown_sec": 0.69,
+      "cu_spent": 0.0
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794287674.2171438
+    },
+    "error": "GPU pool exhausted for A100: Command '['colab', 'new', '-s', 'eval-t4-1794287673', '--gpu', 'A100', '--high-mem']' returned non-zero exit status 1."
+  },
+  {
+    "tier_id": "4",
+    "name": "tier4-a100-80gb",
+    "accelerator": "A100",
+    "high_mem": true,
+    "model": "qwen3.6-opus:apex",
+    "cost_hr": 8.88,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 164.92,
+      "gpu_hardware": "NVIDIA A100-SXM4-80GB, 81920 MiB, 580.82.07",
+      "t_load_sec": 679.64,
+      "vram_used_after_load": "25506 MiB",
+      "t_generation_sec": 95.86,
+      "prompt_tokens": 330,
+      "completion_tokens": 1455,
+      "total_tokens": 1785,
+      "tokens_per_second": 15.18,
+      "finish_reason": "stop",
+      "t_teardown_sec": 1.07,
+      "cu_spent": 1.74
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 185,
+      "tests_collected": 10,
+      "tests_passed": 10,
+      "tests_failed": 0,
+      "has_lock": true,
+      "has_acquire": true,
+      "has_wait": true,
+      "all_tests_pass": true,
+      "error": null,
+      "pytest_output_summary": "  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    "timestamps": {
+      "start": 1794287815.5911984
+    }
+  }
+]

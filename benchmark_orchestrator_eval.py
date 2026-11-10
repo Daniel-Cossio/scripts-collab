@@ -126,25 +126,45 @@ def evaluate_code_quality(output_text: str, tier_id: str) -> dict:
             continue
         if in_block:
             current_block.append(line)
-            
+
+    if in_block and current_block:
+        code_blocks.append("\n".join(current_block))
+
     if not code_blocks:
-        code_to_eval = output_text
+        clean_lines = []
+        for line in output_text.splitlines():
+            if line.strip().startswith("```"):
+                continue
+            clean_lines.append(line)
+        code_to_eval = "\n".join(clean_lines)
     else:
         code_to_eval = "\n\n".join(code_blocks)
-        
-    eval_res["lines_of_code"] = len(code_to_eval.splitlines())
+
+    lines = code_to_eval.splitlines()
+    eval_res["lines_of_code"] = len(lines)
     eval_res["has_lock"] = "asyncio.Lock" in code_to_eval or "Lock(" in code_to_eval
     eval_res["has_acquire"] = "def acquire" in code_to_eval
     eval_res["has_wait"] = "def wait_for_tokens" in code_to_eval
 
-    # Validar AST
-    try:
-        ast.parse(code_to_eval)
-        eval_res["ast_valid"] = True
-    except SyntaxError as se:
-        eval_res["ast_valid"] = False
-        eval_res["error"] = f"SyntaxError: {se}"
+    # Validar AST (si fue truncado al final, retroceder hasta que compile válidamente)
+    ast_valid = False
+    parsed_code = code_to_eval
+    for i in range(len(lines), 0, -1):
+        candidate = "\n".join(lines[:i])
+        try:
+            ast.parse(candidate)
+            ast_valid = True
+            parsed_code = candidate
+            break
+        except SyntaxError:
+            pass
+
+    eval_res["ast_valid"] = ast_valid
+    if not ast_valid:
+        eval_res["error"] = "SyntaxError: No valid Python AST could be formed"
         return eval_res
+
+    code_to_eval = parsed_code
 
     # Guardar archivo para pytest
     test_file = OUTPUT_DIR / f"test_tier_{tier_id}.py"
@@ -153,8 +173,13 @@ def evaluate_code_quality(output_text: str, tier_id: str) -> dict:
 
     # Ejecutar pytest con uv
     try:
-        cmd = ["uv", "tool", "run", "--with", "pytest-asyncio", "pytest", str(test_file), "-q", "--tb=short"]
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+        cmd = [
+            "uv", "tool", "run", "--with", "pytest-asyncio", "--with", "pytest-mock",
+            "pytest", str(test_file),
+            "-o", "asyncio_mode=auto",
+            "-q", "--tb=short"
+        ]
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=20)
         pytest_out = proc.stdout + proc.stderr
         
         # Parsear salida de pytest
@@ -172,6 +197,9 @@ def evaluate_code_quality(output_text: str, tier_id: str) -> dict:
         if eval_res["tests_collected"] > 0 and eval_res["tests_failed"] == 0:
             eval_res["all_tests_pass"] = True
         eval_res["pytest_output_summary"] = pytest_out.strip().splitlines()[-1] if pytest_out.strip() else ""
+    except subprocess.TimeoutExpired:
+        eval_res["error"] = "TimeoutExpired: Pytest took >20s (probable deadlock/infinite sleep in generated coroutine)"
+        eval_res["pytest_output_summary"] = "TIMEOUT / DEADLOCK DETECTED"
     except Exception as e:
         eval_res["error"] = f"Pytest execution error: {e}"
 
@@ -214,9 +242,9 @@ def run_single_tier_benchmark(tier_id: str) -> dict:
         print(f"⏳ [1/6] Provisionando VM con {' '.join(new_cmd)}...")
         try:
             colab_env = os.environ.copy()
-            colab_env["COLAB_CLI_ASSIGN_RETRIES"] = "1"
-            colab_env["COLAB_CLI_RETRY_BACKOFF"] = "3"
-            subprocess.run(new_cmd, check=True, env=colab_env, timeout=120)
+            colab_env["COLAB_CLI_ASSIGN_RETRIES"] = "3"
+            colab_env["COLAB_CLI_RETRY_BACKOFF"] = "10"
+            subprocess.run(new_cmd, check=True, env=colab_env, timeout=180)
         except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as e:
             print(f"⚠️ Acelerador {accelerator} no disponible actualmente en el pool: {e}")
             result["status"] = "UNAVAILABLE"
@@ -237,7 +265,7 @@ def run_single_tier_benchmark(tier_id: str) -> dict:
         result["metrics"]["gpu_hardware"] = gpu_info
         print(f"   🎮 GPU Real: {gpu_info}")
 
-        # 3. Subir scripts y montar Google Drive
+        # 3. Subir scripts a la VM
         print("📤 [3/6] Transfiriendo rclone.conf y scripts a la VM...")
         subprocess.run(["colab", "upload", "-s", session_name, str(RCLONE_CONF), "/content/rclone.conf"], check=True)
         subprocess.run(["colab", "upload", "-s", session_name, str(BASE_DIR / "setup_drive_headless.py"), "/content/setup_drive_headless.py"], check=True)
@@ -263,7 +291,7 @@ print(f"PID:{{proc.pid}}")
 
         # Esperar a que el servidor responda en http://localhost:8899/v1/models
         server_ready = False
-        max_wait_server = 180  # 3 minutos max
+        max_wait_server = 750  # 12.5 minutos max para permitir lectura completa de modelos de hasta 28 GB desde Drive
         start_wait = time.time()
         check_code = """
 import urllib.request, json
@@ -273,12 +301,24 @@ try:
 except Exception as e:
     print(f"WAITING: {e}")
 """
+        last_log_print = time.time()
         while time.time() - start_wait < max_wait_server:
-            time.sleep(4)
+            time.sleep(5)
             probe = subprocess.check_output(["colab", "exec", "-s", session_name, "--timeout", "10"], input=check_code, text=True).strip()
             if "READY" in probe:
                 server_ready = True
                 break
+            if time.time() - last_log_print > 25:
+                last_log_print = time.time()
+                try:
+                    tail = subprocess.check_output(
+                        ["colab", "exec", "-s", session_name, "--timeout", "10"],
+                        input="import subprocess; print(subprocess.check_output(['tail', '-n', '3', '/content/server.log'], text=True).strip())",
+                        text=True
+                    ).strip()
+                    print(f"      [Cargando tensores @ {int(time.time() - start_wait)}s] {tail}")
+                except Exception:
+                    pass
 
         if not server_ready:
             print("❌ Error: llama-server no alcanzó el estado READY dentro del tiempo límite.")
@@ -309,20 +349,23 @@ except Exception as e:
             "messages": [
                 {
                     "role": "system",
-                    "content": "You are an expert Python engineer. Implement the requested Python module and pytest test suite. Output executable python code inside ```python blocks without fluff."
+                    "content": "You are an expert Python engineer. Implement the requested Python module and pytest test suite. Do not think or explain; output only the executable python code inside ```python blocks."
                 },
                 {"role": "user", "content": TASK_PROMPT}
             ],
             "temperature": 0.2,
-            "max_tokens": 2048,
-            "stream": False
+            "max_tokens": 3072,
+            "stream": False,
+            "chat_template_kwargs": {
+                "enable_thinking": False
+            }
         }
 
+        payload_json_str = json.dumps(payload_data)
         exec_code = f"""
 import urllib.request, json, time
 
-payload = {json.dumps(payload_data)}
-data = json.dumps(payload).encode("utf-8")
+data = {repr(payload_json_str)}.encode("utf-8")
 req = urllib.request.Request("http://localhost:8899/v1/chat/completions", data=data, headers={{"Content-Type": "application/json"}})
 
 t0 = time.time()
@@ -364,12 +407,12 @@ print(json.dumps({{
         print(f"   ⚡ Generación: {completion_tokens} tokens en {t_generation:.2f}s ➔ {tok_per_sec} tok/s")
 
         # Descargar el contenido generado a local
-        read_resp_code = "import json; res = json.load(open('/content/response.json')); print(res['choices'][0]['message']['content'])"
-        generated_code_text = subprocess.check_output(
-            ["colab", "exec", "-s", session_name, "--timeout", "30"],
-            input=read_resp_code,
-            text=True
-        )
+        local_resp_file = OUTPUT_DIR / f"response_tier_{tier_id}.json"
+        subprocess.run(["colab", "download", "-s", session_name, "/content/response.json", str(local_resp_file)], check=True)
+        with open(local_resp_file, "r", encoding="utf-8") as f:
+            resp_full = json.load(f)
+        msg_obj = resp_full["choices"][0]["message"]
+        generated_code_text = msg_obj.get("content") or msg_obj.get("reasoning_content", "")
 
         # 6. Evaluación de Calidad y Tests en Local
         print("🧪 [6/6] Ejecutando análisis de AST y suite de pytest sobre el código...")

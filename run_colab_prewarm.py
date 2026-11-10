@@ -94,7 +94,7 @@ if os.path.exists("/content/prewarm.log"):
 
 print(f"STATUS:{is_running}---LOG---{log_tail}")
 """
-        max_duration = 3600  # 60 minutos max
+        max_duration = 7200  # 120 minutos max
         start_monitor = time.time()
         last_log = ""
 
@@ -131,19 +131,13 @@ print(f"STATUS:{is_running}---LOG---{log_tail}")
         print("\n🔍 [5/5] Verificando presencia de modelos en Google Drive vía Rclone local...")
         try:
             drive_check = subprocess.check_output(
-                ["rclone", "lsd", "gdrive:ColabModelsCache/huggingface/hub/"],
+                ["rclone", "ls", "gdrive:ColabModelsCache/huggingface/hub/"],
                 text=True
             ).strip()
-            print("   📁 Directorios en Caché Drive:")
-            print(drive_check)
-        except Exception as e:
-            print(f"   ⚠️ No se pudo verificar directamente en Drive: {e}")
-                ["colab", "exec", "-s", SESSION_NAME, "--timeout", "30"],
-                input=check_code,
-                text=True
-            ).strip()
-            print("   📁 Directorios en Caché Drive:")
-            print(drive_check)
+            print("   📁 Archivos confirmados en Caché Drive:")
+            for line in drive_check.splitlines():
+                if any(ext in line for ext in [".gguf", "refs", "blobs"]):
+                    print(f"      {line}")
         except Exception as e:
             print(f"   ⚠️ No se pudo verificar directamente en Drive: {e}")
 
