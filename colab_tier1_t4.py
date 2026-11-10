@@ -89,6 +89,13 @@ CATALOGO_MODELOS = {
         "alias": "qwen3:8b",
         "desc": "⚡ Qwen3 8B Instruct (Razonamiento Dinámico /think - 128k ctx)",
         "context": "131072"
+    },
+    "4": {
+        "repo": "google/gemma-4-12b-it-qat-GGUF:Q4_K_XL",
+        "file": "gemma-4-12B-it-qat-UD-Q4_K_XL.gguf",
+        "alias": "gemma4-coder:12b",
+        "desc": "💎 Gemma 4 12B Coder (MTP + QAT / Google SOTA Code / 128k ctx - 21 tok/s)",
+        "context": "131072"
     }
 }
 
