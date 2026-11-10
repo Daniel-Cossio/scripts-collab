@@ -385,5 +385,103 @@
     "timestamps": {
       "start": 1794287815.5911984
     }
+  },
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "gemma4-coder:12b",
+    "cost_hr": 1.15,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 43.51,
+      "gpu_hardware": "Tesla T4, 15360 MiB, 580.82.07",
+      "t_load_sec": 366.06,
+      "vram_used_after_load": "9129 MiB",
+      "t_generation_sec": 187.51,
+      "prompt_tokens": 341,
+      "completion_tokens": 1557,
+      "total_tokens": 1898,
+      "tokens_per_second": 8.3,
+      "finish_reason": "stop",
+      "t_teardown_sec": 1.1,
+      "cu_spent": 0.15
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 156,
+      "tests_collected": 6,
+      "tests_passed": 6,
+      "tests_failed": 0,
+      "has_lock": true,
+      "has_acquire": true,
+      "has_wait": true,
+      "all_tests_pass": true,
+      "error": null,
+      "pytest_output_summary": "  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    "timestamps": {
+      "start": 1794320582.3977253
+    }
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "high_mem": false,
+    "model": "gemma4-abliterated:31b",
+    "cost_hr": 1.94,
+    "status": "FAILED",
+    "metrics": {
+      "t_provision_sec": 3.37,
+      "gpu_hardware": "NVIDIA L4, 23034 MiB, 580.82.07",
+      "t_teardown_sec": 1.02,
+      "cu_spent": 0.25
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794321227.9036767
+    },
+    "error": "Server startup timeout. Log:\n\ud83d\ude80 Montando Google Drive v\u00eda Rclone en modo headless...\n   -> Instalando rclone en Colab VM...\n2026/11/10 14:34:18 NOTICE: gdrive: This remote uses rclone's shared Google Drive client_id, which is being retired and will stop working during 2026. Create your own client_id to avoid interruption: https://rclone.org/drive/#making-your-own-client-id\n\u2705 Google Drive montado exitosamente en modo headless.\n\u2705 Google Drive conectado: Cach\u00e9 HF persistente en /content/drive/MyDrive/ColabModelsCache/huggingface\n   (Si el modelo ya fue descargado previamente, iniciar\u00e1 de inmediato sin descargar)\n===========================================================================\n\ud83d\ude80 GOOGLE COLAB LLAMA-SERVER | TIER 2: NVIDIA L4 (24 GB VRAM)\n\ud83c\udfaf Modelo activo:      \ud83d\udc8e Gemma 4 31B ARA Heretic (Abliterated / Cero Filtros / 128k ctx - ~52 tok/s)\n\ud83d\udce6 Repositorio GGUF:   mradermacher/gemma-4-31B-it-ARA-heretic-GGUF\n\ud83d\udcc4 Archivo espec\u00edfico: gemma-4-31B-it-ARA-heretic.Q4_K_M.gguf\n\ud83d\udccf Ventana contexto:   131,072 tokens\n===========================================================================\n\ud83d\udd0d 1/4 Verificando GPU NVIDIA...\n\ud83c\udfae GPU Detectada: NVIDIA L4, 23034 MiB\n\ud83e\uddf9 Limpiando procesos previos y liberando VRAM...\n\ud83d\udce6 2/4 Descargando cliente de t\u00fanel Cloudflare...\n\ud83d\udce6 3/4 Verificando motor de inferencia llama.cpp con CUDA 12.8...\n   -> Descargando binarios llama-server...\n   -> Descargando runtime CUDA cuBLAS...\n\n\u2699\ufe0f  4/4 Iniciando llama-server (gemma4-abliterated:31b) con 131072 tokens...\n   \u26a0\ufe0f 8.02.211.640 E srv  server_run_i: exiting due to model loading error\n\n\u274c Error cr\u00edtico: llama-server no pudo iniciar.\n\n"
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "high_mem": false,
+    "model": "gemma4-abliterated:31b",
+    "cost_hr": 1.94,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 15.95,
+      "gpu_hardware": "NVIDIA L4, 23034 MiB, 580.82.07",
+      "t_load_sec": 639.55,
+      "vram_used_after_load": "20888 MiB",
+      "t_generation_sec": 123.43,
+      "prompt_tokens": 341,
+      "completion_tokens": 1479,
+      "total_tokens": 1820,
+      "tokens_per_second": 11.98,
+      "finish_reason": "stop",
+      "t_teardown_sec": 0.94,
+      "cu_spent": 0.28
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 157,
+      "tests_collected": 7,
+      "tests_passed": 7,
+      "tests_failed": 0,
+      "has_lock": true,
+      "has_acquire": true,
+      "has_wait": true,
+      "all_tests_pass": true,
+      "error": null,
+      "pytest_output_summary": "  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    "timestamps": {
+      "start": 1794322073.0125322
+    }
   }
 ]

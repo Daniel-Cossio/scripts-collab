@@ -100,8 +100,8 @@ CATALOGO_MODELOS = {
         "repo": "mradermacher/gemma-4-31B-it-ARA-heretic-GGUF",
         "file": "gemma-4-31B-it-ARA-heretic.Q4_K_M.gguf",
         "alias": "gemma4-abliterated:31b",
-        "desc": "💎 Gemma 4 31B ARA Heretic (Abliterated / Cero Filtros / 128k ctx - ~52 tok/s)",
-        "context": "131072"
+        "desc": "💎 Gemma 4 31B ARA Heretic (Abliterated / Cero Filtros / 32k ctx - ~52 tok/s)",
+        "context": "32768"
     }
 }
 

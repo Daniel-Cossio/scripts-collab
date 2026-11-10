@@ -220,12 +220,18 @@ def run_single_tier_benchmark(tier_id: str) -> dict:
     initial_balance, _ = get_colab_balance()
     t_start = time.time()
     
+    model_alias = tier_info["model_alias"]
+    if str(tier_id) == "1" and os.environ.get("COLAB_MODEL_TIER1") == "4":
+        model_alias = "gemma4-coder:12b"
+    elif str(tier_id) == "2" and os.environ.get("COLAB_MODEL_TIER2") == "5":
+        model_alias = "gemma4-abliterated:31b"
+
     result = {
         "tier_id": tier_id,
         "name": tier_info["name"],
         "accelerator": accelerator,
         "high_mem": high_mem,
-        "model": tier_info["model_alias"],
+        "model": model_alias,
         "cost_hr": tier_info["cost_hr"],
         "status": "INITIALIZING",
         "metrics": {},
@@ -274,10 +280,19 @@ def run_single_tier_benchmark(tier_id: str) -> dict:
         # 4. Lanzar llama-server en background dentro de la VM
         print(f"🚀 [4/6] Iniciando {script_name} y cargando modelo desde Drive...")
         t_load_start = time.time()
+        tier1_val = os.environ.get("COLAB_MODEL_TIER1", "")
+        tier2_val = os.environ.get("COLAB_MODEL_TIER2", "")
+        ctx_tokens = tier_info['context_tokens']
+        if str(tier_id) == "2" and tier2_val == "5":
+            ctx_tokens = "32768"
         launch_code = f"""
 import subprocess, os
 env = os.environ.copy()
-env["COLAB_CONTEXT_TOKENS"] = "{tier_info['context_tokens']}"
+env["COLAB_CONTEXT_TOKENS"] = "{ctx_tokens}"
+if "{tier1_val}":
+    env["COLAB_MODEL_TIER1"] = "{tier1_val}"
+if "{tier2_val}":
+    env["COLAB_MODEL_TIER2"] = "{tier2_val}"
 proc = subprocess.Popen(
     ["python3", "-u", "/content/{script_name}"],
     stdout=open("/content/server.log", "w"),
