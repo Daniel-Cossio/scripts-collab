@@ -483,5 +483,105 @@
     "timestamps": {
       "start": 1794322073.0125322
     }
+  },
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "qwen3.8-27b:iq2",
+    "cost_hr": 1.15,
+    "status": "FAILED",
+    "metrics": {
+      "t_provision_sec": 43.7,
+      "gpu_hardware": "[colab] A new version of Colab CLI is available: 0.8.0 (current: 0.7.5)\n[colab] Run 'colab update' to update.\n[colab] To silence this check, set \"enable_update_check\": false in ~/.config/colab-cli/settings.json\n\nTesla T4, 15360 MiB, 580.82.07",
+      "t_load_sec": 309.97,
+      "vram_used_after_load": "[colab] A new version of Colab CLI is available: 0.8.0 (current: 0.7.5)\n[colab] Run 'colab update' to update.\n[colab] To silence this check, set \"enable_update_check\": false in ~/.config/colab-cli/settings.json\n\n9571 MiB",
+      "t_teardown_sec": 0.98,
+      "cu_spent": 0.16
+    },
+    "quality": {},
+    "timestamps": {
+      "start": 1794587085.6587708
+    },
+    "error": "Expecting value: line 1 column 2 (char 1)"
+  },
+  {
+    "tier_id": "1",
+    "name": "tier1-t4",
+    "accelerator": "T4",
+    "high_mem": false,
+    "model": "qwen3.8-27b:iq2",
+    "cost_hr": 1.15,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 164.22,
+      "gpu_hardware": "[colab] A new version of Colab CLI is available: 0.8.0 (current: 0.7.5)\n[colab] Run 'colab update' to update.\n[colab] To silence this check, set \"enable_update_check\": false in ~/.config/colab-cli/settings.json\n\nTesla T4, 15360 MiB, 580.82.07",
+      "t_load_sec": 358.32,
+      "vram_used_after_load": "[colab] A new version of Colab CLI is available: 0.8.0 (current: 0.7.5)\n[colab] Run 'colab update' to update.\n[colab] To silence this check, set \"enable_update_check\": false in ~/.config/colab-cli/settings.json\n\n9571 MiB",
+      "t_generation_sec": 377.87,
+      "prompt_tokens": 330,
+      "completion_tokens": 1931,
+      "total_tokens": 2261,
+      "tokens_per_second": 5.11,
+      "finish_reason": "stop",
+      "t_teardown_sec": 0.99,
+      "cu_spent": 0.17
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 257,
+      "tests_collected": 0,
+      "tests_passed": 0,
+      "tests_failed": 0,
+      "has_lock": true,
+      "has_acquire": true,
+      "has_wait": true,
+      "all_tests_pass": false,
+      "error": null,
+      "pytest_output_summary": "  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    "timestamps": {
+      "start": 1794587845.7951949
+    }
+  },
+  {
+    "tier_id": "2",
+    "name": "tier2-l4",
+    "accelerator": "L4",
+    "high_mem": false,
+    "model": "qwen3.8-27b:q4",
+    "cost_hr": 1.94,
+    "status": "SUCCESS",
+    "metrics": {
+      "t_provision_sec": 3.33,
+      "gpu_hardware": "[colab] A new version of Colab CLI is available: 0.8.0 (current: 0.7.5)\n[colab] Run 'colab update' to update.\n[colab] To silence this check, set \"enable_update_check\": false in ~/.config/colab-cli/settings.json\n\nNVIDIA L4, 23034 MiB, 580.82.07",
+      "t_load_sec": 407.92,
+      "vram_used_after_load": "[colab] A new version of Colab CLI is available: 0.8.0 (current: 0.7.5)\n[colab] Run 'colab update' to update.\n[colab] To silence this check, set \"enable_update_check\": false in ~/.config/colab-cli/settings.json\n\n16662 MiB",
+      "t_generation_sec": 107.32,
+      "prompt_tokens": 330,
+      "completion_tokens": 1553,
+      "total_tokens": 1883,
+      "tokens_per_second": 14.47,
+      "finish_reason": "stop",
+      "t_teardown_sec": 1.19,
+      "cu_spent": 0.18
+    },
+    "quality": {
+      "ast_valid": true,
+      "lines_of_code": 201,
+      "tests_collected": 6,
+      "tests_passed": 6,
+      "tests_failed": 0,
+      "has_lock": true,
+      "has_acquire": true,
+      "has_wait": true,
+      "all_tests_pass": true,
+      "error": null,
+      "pytest_output_summary": "  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))"
+    },
+    "timestamps": {
+      "start": 1794588791.4020634
+    }
   }
 ]

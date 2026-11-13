@@ -102,6 +102,13 @@ CATALOGO_MODELOS = {
         "alias": "gemma4-abliterated:31b",
         "desc": "💎 Gemma 4 31B ARA Heretic (Abliterated / Cero Filtros / 32k ctx - ~52 tok/s)",
         "context": "32768"
+    },
+    "6": {
+        "repo": "unsloth/Qwen3.8-27B-GGUF",
+        "file": "Qwen3.8-27B-UD-Q4_K_M.gguf",
+        "alias": "qwen3.8-27b:q4",
+        "desc": "⚡ Qwen 3.8 27B UD Q4_K_M (SOTA High-Precision / 32k ctx - Tier 2 L4)",
+        "context": "32768"
     }
 }
 
@@ -187,6 +194,8 @@ os.environ["PATH"] = f"/opt/llama:{os.environ.get('PATH', '')}"
 # ------------------------------------------------------------------------------
 # 6. Lanzar llama-server con Aceleración GPU Real (Puerto 8899)
 # ------------------------------------------------------------------------------
+Path("/tmp/llama_slots").mkdir(parents=True, exist_ok=True)
+
 print(f"\n⚙️  4/4 Iniciando llama-server ({ALIAS_MODELO}) con {CONTEXT_TOKENS} tokens...")
 server_cmd = [
     "/opt/llama/llama-server",
@@ -203,6 +212,8 @@ server_cmd = [
     "-np", "2",
     "--kv-unified",
     "--cont-batching",
+    "--cache-reuse", "256",
+    "--slot-save-path", "/tmp/llama_slots",
     "--jinja",
     "--chat-template-kwargs", '{"enable_thinking": false}'
 ]

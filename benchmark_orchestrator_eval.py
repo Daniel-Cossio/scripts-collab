@@ -221,10 +221,18 @@ def run_single_tier_benchmark(tier_id: str) -> dict:
     t_start = time.time()
     
     model_alias = tier_info["model_alias"]
-    if str(tier_id) == "1" and os.environ.get("COLAB_MODEL_TIER1") == "4":
-        model_alias = "gemma4-coder:12b"
-    elif str(tier_id) == "2" and os.environ.get("COLAB_MODEL_TIER2") == "5":
-        model_alias = "gemma4-abliterated:31b"
+    if str(tier_id) == "1":
+        t1_opt = os.environ.get("COLAB_MODEL_TIER1")
+        if t1_opt == "4":
+            model_alias = "gemma4-coder:12b"
+        elif t1_opt == "5":
+            model_alias = "qwen3.8-27b:iq2"
+    elif str(tier_id) == "2":
+        t2_opt = os.environ.get("COLAB_MODEL_TIER2")
+        if t2_opt == "5":
+            model_alias = "gemma4-abliterated:31b"
+        elif t2_opt == "6":
+            model_alias = "qwen3.8-27b:q4"
 
     result = {
         "tier_id": tier_id,
@@ -283,7 +291,9 @@ def run_single_tier_benchmark(tier_id: str) -> dict:
         tier1_val = os.environ.get("COLAB_MODEL_TIER1", "")
         tier2_val = os.environ.get("COLAB_MODEL_TIER2", "")
         ctx_tokens = tier_info['context_tokens']
-        if str(tier_id) == "2" and tier2_val == "5":
+        if str(tier_id) == "1" and tier1_val == "5":
+            ctx_tokens = "65536"
+        elif str(tier_id) == "2" and tier2_val in ("5", "6"):
             ctx_tokens = "32768"
         launch_code = f"""
 import subprocess, os
@@ -360,7 +370,7 @@ except Exception as e:
         # 5. Delegar y Ejecutar Tarea de Benchmark Idéntica
         print("🎯 [5/6] Delegando tarea de benchmark idéntica al modelo...")
         payload_data = {
-            "model": tier_info["model_alias"],
+            "model": model_alias,
             "messages": [
                 {
                     "role": "system",
@@ -384,7 +394,7 @@ data = {repr(payload_json_str)}.encode("utf-8")
 req = urllib.request.Request("http://localhost:8899/v1/chat/completions", data=data, headers={{"Content-Type": "application/json"}})
 
 t0 = time.time()
-with urllib.request.urlopen(req, timeout=300) as resp:
+with urllib.request.urlopen(req, timeout=600) as resp:
     res = json.loads(resp.read().decode("utf-8"))
 t_total = time.time() - t0
 
@@ -399,7 +409,7 @@ print(json.dumps({{
 }}))
 """
         response_summary_str = subprocess.check_output(
-            ["colab", "exec", "-s", session_name, "--timeout", "360"],
+            ["colab", "exec", "-s", session_name, "--timeout", "660"],
             input=exec_code,
             text=True
         ).strip()
@@ -467,7 +477,12 @@ print(json.dumps({{
 def main():
     parser = argparse.ArgumentParser(description="Multi-Tier Orchestration & Benchmark Evaluator")
     parser.add_argument("--tier", "-t", default="all", choices=["1", "2", "3", "4", "all"], help="Tier específico o 'all'")
+    parser.add_argument("--model-tier1", default=os.environ.get("COLAB_MODEL_TIER1", "1"), help="Modelo para Tier 1 (1-5)")
+    parser.add_argument("--model-tier2", default=os.environ.get("COLAB_MODEL_TIER2", "1"), help="Modelo para Tier 2 (1-6)")
     args = parser.parse_args()
+
+    os.environ["COLAB_MODEL_TIER1"] = args.model_tier1
+    os.environ["COLAB_MODEL_TIER2"] = args.model_tier2
 
     tiers_to_run = ["1", "2", "3", "4"] if args.tier == "all" else [args.tier]
     

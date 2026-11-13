@@ -87,6 +87,19 @@ if len(sys.argv) > 1:
                 "file": "gemma-4-31B-it-ARA-heretic.Q4_K_M.gguf"
             }
         ]
+    elif arg in ("qwen38", "qwen38_v31", "qwen3.8"):
+        MODELS_TO_DOWNLOAD = [
+            {
+                "tier": "Tier 1 (T4 - Qwen 3.8 27B IQ2_XXS)",
+                "repo": "unsloth/Qwen3.8-27B-GGUF",
+                "file": "Qwen3.8-27B-UD-IQ2_XXS.gguf"
+            },
+            {
+                "tier": "Tier 2 (L4 - Qwen 3.8 27B Q4_K_M)",
+                "repo": "unsloth/Qwen3.8-27B-GGUF",
+                "file": "Qwen3.8-27B-UD-Q4_K_M.gguf"
+            }
+        ]
     elif arg in ("3,4", "3-4", "heavy", "big", "grandes"):
         MODELS_TO_DOWNLOAD = [
             {
@@ -135,13 +148,13 @@ for item in MODELS_TO_DOWNLOAD:
         print(f"   ✅ Descarga local completada en {t_elap:.1f}s ({size_gb:.2f} GB a ~{size_gb / (t_elap / 60):.2f} GB/min)")
         print(f"   Ruta local: {path}")
 
-        # Fase 2: Subida síncrona a Google Drive vía rclone copy
+        # Fase 2: Subida síncrona a Google Drive vía rclone copy y materialización de snapshots
         print("\n" + "─" * 75)
         print(f"📤 [Fase 2/2] Sincronizando {item['file']} directamente a Google Drive (5 TB)...")
         print("─" * 75)
         t_sync_start = time.time()
         
-        # Subir todo el árbol de cache local manteniendo la estructura de hub/
+        # 1. Subir metadatos y árbol de cache local manteniendo estructura hub/
         sync_cmd = [
             "rclone", "copy",
             str(local_cache_dir / "hub"),
@@ -153,6 +166,21 @@ for item in MODELS_TO_DOWNLOAD:
             "-v"
         ]
         subprocess.run(sync_cmd, check=True)
+
+        # 2. Fix de materialización: rclone copyto -L para asegurar que el archivo en snapshots/ sea real en Drive
+        rel_path = Path(path).relative_to(local_cache_dir / "hub")
+        remote_dest = f"gdrive:ColabModelsCache/huggingface/hub/{rel_path}"
+        print(f"   Materializando {item['file']} en {remote_dest} vía rclone copyto -L...")
+        copyto_cmd = [
+            "rclone", "copyto", "-L",
+            str(path),
+            remote_dest,
+            "--buffer-size", "128M",
+            "--stats", "15s",
+            "-v"
+        ]
+        subprocess.run(copyto_cmd, check=True)
+
         t_sync = time.time() - t_sync_start
         print(f"   🎉 ¡Sincronización confirmada en Google Drive en {t_sync:.1f}s!")
 

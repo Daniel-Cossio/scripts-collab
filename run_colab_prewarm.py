@@ -130,11 +130,13 @@ print(f"STATUS:{is_running}---LOG---{log_tail}")
         # 5. Verificación final de archivos en Drive directamente vía Rclone
         print("\n🔍 [5/5] Verificando presencia de modelos en Google Drive vía Rclone local...")
         try:
+            target_subpath = "models--unsloth--Qwen3.8-27B-GGUF/" if "qwen" in target.lower() else ""
+            check_path = f"gdrive:ColabModelsCache/huggingface/hub/{target_subpath}"
             drive_check = subprocess.check_output(
-                ["rclone", "ls", "gdrive:ColabModelsCache/huggingface/hub/"],
+                ["rclone", "lsl", check_path],
                 text=True
             ).strip()
-            print("   📁 Archivos confirmados en Caché Drive:")
+            print(f"   📁 Archivos confirmados en Caché Drive ({check_path}):")
             for line in drive_check.splitlines():
                 if any(ext in line for ext in [".gguf", "refs", "blobs"]):
                     print(f"      {line}")

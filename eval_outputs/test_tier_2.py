@@ -2,156 +2,200 @@ import asyncio
 import time
 from typing import Optional
 
+
 class AsyncTokenBucket:
-    """
-    An asynchronous implementation of the Token Bucket algorithm for rate limiting.
-    """
+    """An asynchronous token bucket rate limiter."""
+
     def __init__(self, capacity: float, refill_rate: float):
         """
-        :param capacity: Maximum number of tokens the bucket can hold.
-        :param refill_rate: Number of tokens added to the bucket per second.
+        Initialize the token bucket.
+
+        Args:
+            capacity: Maximum number of tokens the bucket can hold.
+            refill_rate: Number of tokens added per second.
         """
+        if capacity <= 0:
+            raise ValueError("Capacity must be positive")
+        if refill_rate < 0:
+            raise ValueError("Refill rate must be non-negative")
+
         self.capacity = capacity
         self.refill_rate = refill_rate
-        self.tokens = capacity
-        self.last_update = time.monotonic()
+        self._tokens = capacity
+        self._last_refill = time.monotonic()
         self._lock = asyncio.Lock()
 
-    async def _refill(self) -> None:
-        """Internal method to update token count based on elapsed time."""
+    def _refill(self) -> None:
+        """Refill tokens based on elapsed time. Must be called while holding the lock."""
         now = time.monotonic()
-        delta = now - self.last_update
-        self.tokens = min(self.capacity, self.tokens + delta * self.refill_rate)
-        self.last_update = now
+        elapsed = now - self._last_refill
+        if elapsed > 0:
+            tokens_to_add = elapsed * self.refill_rate
+            self._tokens = min(self.capacity, self._tokens + tokens_to_add)
+            self._last_refill = now
 
     async def acquire(self, tokens: float = 1.0) -> bool:
         """
-        Attempts to consume tokens immediately.
-        Returns True if successful, False otherwise.
+        Try to consume tokens immediately.
+
+        Args:
+            tokens: Number of tokens to consume.
+
+        Returns:
+            True if tokens were consumed, False otherwise.
         """
+        if tokens <= 0:
+            return True
+        if tokens > self.capacity:
+            return False
+
         async with self._lock:
-            await self._refill()
-            if self.tokens >= tokens:
-                self.tokens -= tokens
+            self._refill()
+            if self._tokens >= tokens:
+                self._tokens -= tokens
                 return True
             return False
 
     async def wait_for_tokens(self, tokens: float = 1.0, timeout: Optional[float] = None) -> bool:
         """
-        Waits asynchronously until enough tokens are available.
-        Returns True if tokens were acquired, False if timeout occurred.
+        Wait asynchronously until enough tokens are available, then consume them.
+
+        Args:
+            tokens: Number of tokens to consume.
+            timeout: Maximum time to wait in seconds. None means wait indefinitely.
+
+        Returns:
+            True if tokens were consumed, False if timeout expired.
         """
-        start_time = time.monotonic()
-        
+        if tokens <= 0:
+            return True
+        if tokens > self.capacity:
+            return False
+
+        deadline = None
+        if timeout is not None:
+            deadline = time.monotonic() + timeout
+
         while True:
             async with self._lock:
-                await self._refill()
-                if self.tokens >= tokens:
-                    self.tokens -= tokens
+                self._refill()
+                if self._tokens >= tokens:
+                    self._tokens -= tokens
                     return True
-                
-                # Calculate time needed until enough tokens are available
-                needed = tokens - self.tokens
+
+                # Calculate how long to wait for enough tokens
+                needed = tokens - self._tokens
+                if self.refill_rate <= 0:
+                    # No refill, so we can never get enough tokens
+                    if deadline is not None:
+                        # Wait until timeout
+                        remaining = deadline - time.monotonic()
+                        if remaining > 0:
+                            await asyncio.sleep(remaining)
+                        return False
+                    else:
+                        # Wait forever (but this will hang)
+                        await asyncio.sleep(0.1)
+                        continue
+
                 wait_time = needed / self.refill_rate
-            
-            # Check for timeout
-            elapsed = time.monotonic() - start_time
-            if timeout is not None and elapsed + wait_time > timeout:
-                # We can still wait for the remaining timeout period
-                remaining = timeout - elapsed
-                if remaining <= 0:
-                    return False
-                await asyncio.sleep(remaining)
-                # Final check after timeout sleep
-                async with self._lock:
-                    await self._refill()
-                    if self.tokens >= tokens:
-                        self.tokens -= tokens
-                        return True
-                    return False
-            
-            await asyncio.sleep(wait_time)
 
-# --- Test Suite ---
+                if deadline is not None:
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        return False
+                    wait_time = min(wait_time, remaining)
+
+            # Sleep outside the lock to allow other tasks to proceed
+            if wait_time > 0:
+                await asyncio.sleep(wait_time)
+            else:
+                # Small sleep to avoid busy waiting
+                await asyncio.sleep(0.001)
+
+
 import pytest
-import pytest_asyncio
+
 
 @pytest.mark.asyncio
-async def test_immediate_acquire_success():
-    # Capacity 5, refill 1/s. Should acquire 5 immediately.
-    bucket = AsyncTokenBucket(5.0, 1.0)
-    assert await bucket.acquire(5.0) is True
-    assert await bucket.acquire(1.0) is False
-
-@pytest.mark.asyncio
-async def test_immediate_acquire_fail():
-    bucket = AsyncTokenBucket(1.0, 1.0)
-    assert await bucket.acquire(1.0) is True
-    assert await bucket.acquire(1.0) is False
-
-@pytest.mark.asyncio
-async def test_token_refill():
-    # Capacity 2, refill 10 per second.
-    bucket = AsyncTokenBucket(2.0, 10.0)
-    assert await bucket.acquire(2.0) is True
-    assert await bucket.acquire(1.0) is False
-    
-    # Wait 0.2s -> should refill 2 tokens
-    await asyncio.sleep(0.25) 
-    assert await bucket.acquire(2.0) is True
-
-@pytest.mark.asyncio
-async def test_wait_for_tokens_success():
-    # Capacity 1, refill 2 per second (1 token every 0.5s)
-    bucket = AsyncTokenBucket(1.0, 2.0)
-    assert await bucket.acquire(1.0) is True
-    
-    # This should wait approx 0.5s and then succeed
-    start = time.monotonic()
-    result = await bucket.wait_for_tokens(1.0, timeout=1.0)
-    end = time.monotonic()
-    
+async def test_immediate_acquire_succeeds_when_tokens_available():
+    """Test that acquire succeeds when tokens are available."""
+    bucket = AsyncTokenBucket(capacity=10, refill_rate=1.0)
+    result = await bucket.acquire(5)
     assert result is True
-    assert 0.4 <= (end - start) <= 0.7
-
-@pytest.mark.asyncio
-async def test_wait_for_tokens_timeout():
-    # Capacity 1, refill 1 per second
-    bucket = AsyncTokenBucket(1.0, 1.0)
-    assert await bucket.acquire(1.0) is True
-    
-    # Try to acquire 2 tokens (impossible since capacity is 1) with timeout
-    result = await bucket.wait_for_tokens(2.0, timeout=0.2)
+    # Should have 5 tokens left
+    result = await bucket.acquire(5)
+    assert result is True
+    # Should have 0 tokens left
+    result = await bucket.acquire(1)
     assert result is False
 
-@pytest.mark.asyncio
-async def test_concurrent_acquisition():
-    # Capacity 10, refill 100/s. 
-    # 10 tasks trying to acquire 1 token each.
-    bucket = AsyncTokenBucket(10.0, 100.0)
-    
-    async def worker():
-        return await bucket.acquire(1.0)
-
-    results = await asyncio.gather(*(worker() for _ in range(10)))
-    assert all(results) is True
-    
-    # 11th should fail
-    assert await bucket.acquire(1.0) is False
 
 @pytest.mark.asyncio
-async def test_high_concurrency_wait():
-    # Small capacity, slow refill, many waiters
-    bucket = AsyncTokenBucket(1.0, 5.0) # 1 token every 0.2s
-    assert await bucket.acquire(1.0) is True
-    
-    async def worker():
-        return await bucket.wait_for_tokens(1.0, timeout=1.0)
+async def test_immediate_acquire_fails_when_tokens_exhausted():
+    """Test that acquire fails when tokens are exhausted."""
+    bucket = AsyncTokenBucket(capacity=5, refill_rate=0.0)
+    # Consume all tokens
+    for _ in range(5):
+        result = await bucket.acquire(1)
+        assert result is True
+    # Should fail now
+    result = await bucket.acquire(1)
+    assert result is False
 
-    # Start 3 workers. Total time should be ~0.6s
-    start = time.monotonic()
-    results = await asyncio.gather(*(worker() for _ in range(3)))
-    end = time.monotonic()
-    
-    assert all(results) is True
-    assert 0.5 <= (end - start) <= 0.8
+
+@pytest.mark.asyncio
+async def test_tokens_refill_correctly_over_time():
+    """Test that tokens refill correctly over time."""
+    bucket = AsyncTokenBucket(capacity=10, refill_rate=10.0)
+    # Consume all tokens
+    for _ in range(10):
+        await bucket.acquire(1)
+    # Wait for refill (1 second should add 10 tokens)
+    await asyncio.sleep(1.1)
+    # Should be able to acquire tokens again
+    result = await bucket.acquire(5)
+    assert result is True
+
+
+@pytest.mark.asyncio
+async def test_wait_for_tokens_successfully_waits_and_acquires():
+    """Test that wait_for_tokens waits and acquires when refilled."""
+    bucket = AsyncTokenBucket(capacity=5, refill_rate=10.0)
+    # Consume all tokens
+    for _ in range(5):
+        await bucket.acquire(1)
+    # Wait for tokens with a timeout
+    result = await bucket.wait_for_tokens(3, timeout=2.0)
+    assert result is True
+
+
+@pytest.mark.asyncio
+async def test_wait_for_tokens_returns_false_on_timeout():
+    """Test that wait_for_tokens returns False on timeout."""
+    bucket = AsyncTokenBucket(capacity=5, refill_rate=0.1)
+    # Consume all tokens
+    for _ in range(5):
+        await bucket.acquire(1)
+    # Try to wait for more tokens than can be refilled in the timeout
+    result = await bucket.wait_for_tokens(10, timeout=0.5)
+    assert result is False
+
+
+@pytest.mark.asyncio
+async def test_concurrent_tasks_acquiring_tokens_safely():
+    """Test that concurrent tasks can safely acquire tokens."""
+    bucket = AsyncTokenBucket(capacity=10, refill_rate=100.0)
+
+    async def worker(worker_id: int) -> bool:
+        return await bucket.acquire(1)
+
+    # Launch multiple concurrent tasks
+    tasks = [worker(i) for i in range(20)]
+    results = await asyncio.gather(*tasks)
+
+    # With capacity 10 and high refill rate, some should succeed
+    # At least the first 10 should succeed immediately
+    successful = sum(1 for r in results if r)
+    assert successful >= 10
+    assert successful <= 20
